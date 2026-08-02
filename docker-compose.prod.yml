@@ -1,0 +1,20 @@
+services:
+  cmz-admin:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    image: cameramobilezone-admin:latest
+
+    container_name: cameramobilezone-admin
+
+    restart: unless-stopped
+
+    ports:
+      - "3030:80"
+
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
