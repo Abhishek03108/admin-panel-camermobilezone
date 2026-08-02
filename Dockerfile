@@ -8,10 +8,6 @@ RUN npm ci
 
 COPY . .
 
-# Load production environment
-COPY .env.production .env.production
-
-# Build with Vite
 RUN npm run build
 
 FROM nginx:alpine
