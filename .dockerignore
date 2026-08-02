@@ -3,17 +3,17 @@ dist
 
 .git
 .github
-.gitignore
 
 .vscode
 .idea
 
-.env
-.env.*
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
 Dockerfile
 docker-compose.yml
-docker-compose.prod.yml
 
 README.md
 

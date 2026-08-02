@@ -5,7 +5,6 @@ services:
       dockerfile: Dockerfile
 
     image: cameramobilezone-admin:latest
-
     container_name: cameramobilezone-admin
 
     restart: unless-stopped
