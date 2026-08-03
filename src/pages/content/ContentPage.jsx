@@ -601,7 +601,13 @@ function HeroBannersTab() {
             </div>
             <div>
               <p className="text-sm font-bold font-heading text-ink">Upload Hero Banner</p>
-              <p className="text-xs font-mono text-muted mt-0.5">Click to choose image (PNG, JPG, WebP supported)</p>
+              <p className="text-xs font-mono text-muted mt-0.5">
+                For <span className="font-semibold text-ink">CameraMobileZone</span>, create every hero banner as:
+              </p>
+              <p className="text-xs font-mono font-bold text-accent mt-1">1920 × 500 px</p>
+              <p className="text-[11px] font-mono text-muted/80 mt-0.5">
+                It gives a premium Apple/Samsung style look here (PNG, JPG, WebP supported)
+              </p>
             </div>
           </>
         )}
@@ -622,7 +628,7 @@ function HeroBannersTab() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {items.map((b) => (
             <div key={b.id} className="bg-white rounded-2xl border border-line shadow-2xs overflow-hidden flex flex-col justify-between">
-              <div className="relative group aspect-video bg-panel overflow-hidden">
+              <div className="relative group aspect-[1920/500] bg-panel overflow-hidden">
                 <img src={b.imageUrl} alt="Hero Banner" className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
               </div>
 
