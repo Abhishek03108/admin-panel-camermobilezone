@@ -59,12 +59,24 @@ const NAV_SECTIONS = [
   },
 ];
 
+// ─────────────────────────────────────────────
 // Motion Variants
+// NOTE: sidebarVariants no longer animates `x`.
+// Framer Motion writes animated values as an inline
+// `style="transform: ..."` on the element, and inline
+// styles always win over Tailwind classes. Since the
+// mobile open/close state is controlled via Tailwind's
+// `translate-x-0` / `-translate-x-full` classes, animating
+// `x` here was permanently pinning the sidebar's transform
+// and silently overriding the Tailwind classes — which is
+// why the close (X) button appeared to do nothing on mobile.
+// We keep only opacity + stagger here, and let Tailwind's
+// `transition-transform` own the slide in/out.
+// ─────────────────────────────────────────────
 const sidebarVariants = {
-  hidden: { opacity: 0, x: -20 },
+  hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    x: 0,
     transition: {
       duration: 0.4,
       ease: [0.16, 1, 0.3, 1],
@@ -117,6 +129,7 @@ export default function Sidebar({ open, onClose }) {
             transition={{ duration: 0.2 }}
             className="fixed inset-0 bg-gray-900/40 backdrop-blur-xs z-30 lg:hidden"
             onClick={onClose}
+            aria-hidden="true"
           />
         )}
       </AnimatePresence>
@@ -125,7 +138,9 @@ export default function Sidebar({ open, onClose }) {
         initial="hidden"
         animate="visible"
         variants={sidebarVariants}
-        className={`fixed lg:sticky top-0 left-0 h-screen w-72 bg-white border-r border-gray-200 z-40 flex flex-col transition-transform lg:translate-x-0 ${
+        role="navigation"
+        aria-label="Admin sidebar"
+        className={`fixed lg:sticky top-0 left-0 h-screen w-72 max-w-[85vw] bg-white border-r border-gray-200 z-40 flex flex-col transition-transform duration-300 ease-in-out lg:translate-x-0 ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -134,7 +149,7 @@ export default function Sidebar({ open, onClose }) {
           variants={headerVariants}
           className="flex items-center justify-between px-5 h-20 border-b border-gray-200 shrink-0"
         >
-          <div className="flex items-center gap-3.5">
+          <div className="flex items-center gap-3.5 min-w-0">
             <motion.img
               whileHover={{ scale: 1.08, rotate: -2 }}
               whileTap={{ scale: 0.92 }}
@@ -143,7 +158,7 @@ export default function Sidebar({ open, onClose }) {
               alt="Camera Mobile Zone Logo"
               className="w-10 h-10 object-contain shrink-0 cursor-pointer"
             />
-            <div className="leading-tight">
+            <div className="leading-tight min-w-0">
               <p className="text-sm font-bold text-gray-900 font-heading tracking-tight truncate max-w-[150px]">
                 Camera Mobile Zone
               </p>
@@ -154,7 +169,8 @@ export default function Sidebar({ open, onClose }) {
           </div>
           <button
             type="button"
-            className="lg:hidden text-gray-400 hover:text-gray-700 p-1.5 rounded-lg hover:bg-gray-100 transition-colors"
+            aria-label="Close sidebar"
+            className="lg:hidden text-gray-400 hover:text-gray-700 p-1.5 rounded-lg hover:bg-gray-100 active:bg-gray-200 transition-colors shrink-0"
             onClick={onClose}
           >
             <X size={20} />
@@ -228,7 +244,9 @@ export default function Sidebar({ open, onClose }) {
                             }`}
                           />
                         </motion.div>
-                        <span className="z-10 tracking-tight">{item.label}</span>
+                        <span className="z-10 tracking-tight truncate">
+                          {item.label}
+                        </span>
                       </motion.div>
                     )}
                   </NavLink>
