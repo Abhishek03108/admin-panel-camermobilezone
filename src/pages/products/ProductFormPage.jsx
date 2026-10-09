@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from "react";
-import { useNavigate, useParams, Link } from "react-router-dom";
+import { useNavigate, useParams, useLocation, Link } from "react-router-dom";
 import { 
   ArrowLeft, 
   Plus, 
@@ -62,6 +62,8 @@ export default function ProductFormPage() {
   const { id } = useParams();
   const isEdit = !!id && id !== "new";
   const navigate = useNavigate();
+  const location = useLocation();
+  const backTo = location.state?.backTo || "/products";
   const toast = useToast();
 
   const [tab, setTab] = useState("Details");
@@ -186,7 +188,7 @@ export default function ProductFormPage() {
       } else {
         const res = await productsApi.create(payload);
         toast.success("Product created successfully.");
-        navigate(`/products/${res.data.data.id}`, { replace: true });
+        navigate(`/products/${res.data.data.id}`, { replace: true, state: location.state });
       }
     } catch (err) {
       toast.error(getErrorMessage(err));
@@ -204,7 +206,7 @@ export default function ProductFormPage() {
       {/* Header Bar */}
       <div>
         <Link
-          to="/products"
+          to={backTo}
           className="inline-flex items-center gap-1.5 text-sm font-semibold text-muted hover:text-ink transition-colors mb-3 group"
         >
           <ArrowLeft size={16} className="transition-transform group-hover:-translate-x-1" />

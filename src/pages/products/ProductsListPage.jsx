@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   Plus,
@@ -45,7 +45,10 @@ const cardVariants = {
 export default function ProductsListPage() {
   const [products, setProducts] = useState([]);
   const [meta, setMeta] = useState(null);
-  const [page, setPage] = useState(1);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = Math.max(1, Number(searchParams.get("page")) || 1);
+  const setPage = (p) => setSearchParams(p > 1 ? { page: String(p) } : {});
+  const location = useLocation();
   const [search, setSearch] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [deleteTarget, setDeleteTarget] = useState(null);
@@ -226,6 +229,7 @@ export default function ProductsListPage() {
                 <div className="flex justify-end items-center gap-1">
                   <Link
                     to={`/products/${p.id}`}
+                    state={{ backTo: location.pathname + location.search }}
                     className="p-2 text-gray-500 hover:text-[#F97316] hover:bg-orange-50 rounded-lg transition-colors cursor-pointer"
                     title="Edit Product"
                   >
