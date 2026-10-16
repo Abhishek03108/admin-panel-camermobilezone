@@ -5,8 +5,8 @@ import { getErrorMessage } from "../../api/axiosClient.js";
 import { useToast } from "../../context/ToastContext.jsx";
 
 /**
- * Single-image uploader. Uploads immediately to Cloudinary via the admin
- * upload endpoint and reports back { url, publicId } through onUploaded.
+ * Single-image uploader. Uploads immediately to the server via the admin
+ * upload endpoint and reports back { id, url, storageKey } through onUploaded.
  */
 export default function ImageUploader({ value, onUploaded, folder = "misc", label = "Image" }) {
   const inputRef = useRef(null);

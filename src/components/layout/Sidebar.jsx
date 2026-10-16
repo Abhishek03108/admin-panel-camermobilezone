@@ -15,6 +15,7 @@ import {
   Settings,
   Wallet,
   Truck,
+  Images,
   X,
 } from "lucide-react";
 
@@ -39,6 +40,7 @@ const NAV_SECTIONS = [
       { to: "/brands", label: "Brands", icon: Award },
       { to: "/reviews", label: "Reviews", icon: Star },
       { to: "/curated", label: "Curated Lists", icon: TrendingUp },
+      { to: "/media", label: "Media Library", icon: Images },
     ],
   },
   {

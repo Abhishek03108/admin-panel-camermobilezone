@@ -28,6 +28,7 @@ import UserDetailPage from "./pages/users/UserDetailPage.jsx";
 import ContactMessagesPage from "./pages/contact/ContactMessagesPage.jsx";
 import NewsletterPage from "./pages/newsletter/NewsletterPage.jsx";
 import ContentPage from "./pages/content/ContentPage.jsx";
+import MediaLibraryPage from "./pages/media/MediaLibraryPage.jsx";
 import SettingsPage from "./pages/settings/SettingsPage.jsx";
 
 import Scan from "./pages/auth/Scan.jsx";
@@ -74,6 +75,7 @@ export default function App() {
         <Route path="contact-messages" element={<ContactMessagesPage />} />
         <Route path="newsletter" element={<NewsletterPage />} />
         <Route path="content" element={<ContentPage />} />
+        <Route path="media" element={<MediaLibraryPage />} />
 
         <Route path="settings" element={<SettingsPage />} />
 
