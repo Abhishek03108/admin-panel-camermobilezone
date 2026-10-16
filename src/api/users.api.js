@@ -5,3 +5,7 @@ export const usersApi = {
   get: (id) => apiClient.get(`/users/${id}`),
   setActiveStatus: (id, isActive) => apiClient.patch(`/users/${id}/status`, { isActive }),
 };
+
+export const accountDeletionsApi = {
+  list: (params) => apiClient.get("/users/deletions", { params }),
+};

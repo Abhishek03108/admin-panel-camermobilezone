@@ -18,6 +18,9 @@ import {
   Images,
   Send,
   Code2,
+  Bell,
+  LifeBuoy,
+  UserX,
   X,
 } from "lucide-react";
 
@@ -47,13 +50,18 @@ const NAV_SECTIONS = [
   },
   {
     title: "Customers",
-    items: [{ to: "/users", label: "Users", icon: Users }],
+    items: [
+      { to: "/users", label: "Users", icon: Users, end: true },
+      { to: "/tickets", label: "Support Queries", icon: LifeBuoy },
+      { to: "/users/deletions", label: "Account Deletions", icon: UserX },
+    ],
   },
   {
     title: "Engagement",
     items: [
       { to: "/contact-messages", label: "Contact Messages", icon: MessageSquare },
       { to: "/newsletter", label: "Newsletter", icon: Mail },
+      { to: "/notifications", label: "App Notifications", icon: Bell },
       { to: "/emails", label: "Send Email", icon: Send },
       { to: "/developer-messages", label: "Developer Messages", icon: Code2 },
       { to: "/content", label: "Site Content", icon: FileText },
