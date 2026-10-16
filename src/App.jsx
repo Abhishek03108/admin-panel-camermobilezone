@@ -30,6 +30,7 @@ import NewsletterPage from "./pages/newsletter/NewsletterPage.jsx";
 import ContentPage from "./pages/content/ContentPage.jsx";
 import MediaLibraryPage from "./pages/media/MediaLibraryPage.jsx";
 import SendEmailPage from "./pages/emails/SendEmailPage.jsx";
+import DeveloperMessagesPage from "./pages/developer/DeveloperMessagesPage.jsx";
 import SettingsPage from "./pages/settings/SettingsPage.jsx";
 
 import Scan from "./pages/auth/Scan.jsx";
@@ -78,6 +79,7 @@ export default function App() {
         <Route path="content" element={<ContentPage />} />
         <Route path="media" element={<MediaLibraryPage />} />
         <Route path="emails" element={<SendEmailPage />} />
+        <Route path="developer-messages" element={<DeveloperMessagesPage />} />
 
         <Route path="settings" element={<SettingsPage />} />
 

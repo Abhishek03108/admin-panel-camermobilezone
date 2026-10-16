@@ -17,6 +17,7 @@ import {
   Truck,
   Images,
   Send,
+  Code2,
   X,
 } from "lucide-react";
 
@@ -54,6 +55,7 @@ const NAV_SECTIONS = [
       { to: "/contact-messages", label: "Contact Messages", icon: MessageSquare },
       { to: "/newsletter", label: "Newsletter", icon: Mail },
       { to: "/emails", label: "Send Email", icon: Send },
+      { to: "/developer-messages", label: "Developer Messages", icon: Code2 },
       { to: "/content", label: "Site Content", icon: FileText },
     ],
   },
