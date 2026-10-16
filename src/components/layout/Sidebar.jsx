@@ -16,6 +16,7 @@ import {
   Wallet,
   Truck,
   Images,
+  Send,
   X,
 } from "lucide-react";
 
@@ -52,6 +53,7 @@ const NAV_SECTIONS = [
     items: [
       { to: "/contact-messages", label: "Contact Messages", icon: MessageSquare },
       { to: "/newsletter", label: "Newsletter", icon: Mail },
+      { to: "/emails", label: "Send Email", icon: Send },
       { to: "/content", label: "Site Content", icon: FileText },
     ],
   },
