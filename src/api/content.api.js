@@ -34,3 +34,23 @@ export const heroBannersApi = {
   },
   remove: (id) => apiClient.delete(`/content/hero-banners/${id}`),
 };
+
+/** Mobile-app home banners — separate from the website's hero banners. */
+export const appBannersApi = {
+  list: () => apiClient.get("/content/app-banners"),
+  create: (file, link) => {
+    const form = new FormData();
+    form.append("image", file);
+    if (link) form.append("link", link);
+    return apiClient.post("/content/app-banners", form, { headers: { "Content-Type": "multipart/form-data" } });
+  },
+  update: (id, { file, link, isActive }) => {
+    const form = new FormData();
+    if (file) form.append("image", file);
+    if (link !== undefined) form.append("link", link);
+    if (isActive !== undefined) form.append("isActive", String(isActive));
+    return apiClient.patch(`/content/app-banners/${id}`, form, { headers: { "Content-Type": "multipart/form-data" } });
+  },
+  reorder: (ids) => apiClient.patch("/content/app-banners/reorder", { ids }),
+  remove: (id) => apiClient.delete(`/content/app-banners/${id}`),
+};

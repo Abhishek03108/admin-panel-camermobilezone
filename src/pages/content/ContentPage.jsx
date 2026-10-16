@@ -12,9 +12,13 @@ import {
   X,
   UploadCloud,
   CheckCircle2,
-  EyeOff
+  EyeOff,
+  ArrowUp,
+  ArrowDown,
+  Link2,
+  Smartphone,
 } from "lucide-react";
-import { testimonialsApi, faqsApi, heroBannersApi } from "../../api/content.api.js";
+import { testimonialsApi, faqsApi, heroBannersApi, appBannersApi } from "../../api/content.api.js";
 import { getErrorMessage } from "../../api/axiosClient.js";
 import { useToast } from "../../context/ToastContext.jsx";
 import Seo from "../../components/common/Seo.jsx";
@@ -26,7 +30,7 @@ import ConfirmDialog from "../../components/common/ConfirmDialog.jsx";
 import { Field, Input, Textarea, Checkbox } from "../../components/common/FormField.jsx";
 import ImageUploader from "../../components/common/ImageUploader.jsx";
 
-const TABS = ["Testimonials", "FAQs", "Hero Banners"];
+const TABS = ["Testimonials", "FAQs", "Hero Banners", "App Banners"];
 
 // Helper for smooth minimal loader delay to prevent layout flickering
 const delay = (ms = 350) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -76,6 +80,7 @@ export default function ContentPage() {
           {tab === "Testimonials" && <TestimonialsTab />}
           {tab === "FAQs" && <FaqsTab />}
           {tab === "Hero Banners" && <HeroBannersTab />}
+          {tab === "App Banners" && <AppBannersTab />}
         </motion.div>
       </AnimatePresence>
     </motion.div>
@@ -680,3 +685,253 @@ function HeroBannersTab() {
     </div>
   );
 }
+
+// ---------------------------------------------------------------------
+// App Banners Tab — the mobile app's home screen (not the website)
+// ---------------------------------------------------------------------
+function AppBannersTab() {
+  const [items, setItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [file, setFile] = useState(null);
+  const [link, setLink] = useState("");
+  const [isUploading, setIsUploading] = useState(false);
+  const [editing, setEditing] = useState(null);
+  const [deleteTarget, setDeleteTarget] = useState(null);
+  const toast = useToast();
+
+  const load = async () => {
+    setIsLoading(true);
+    try {
+      const res = await appBannersApi.list();
+      setItems(res.data.data || []);
+    } catch (err) {
+      toast.error(getErrorMessage(err));
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    load();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleUpload = async (e) => {
+    e.preventDefault();
+    if (!file) return toast.error("Choose a banner image first.");
+    setIsUploading(true);
+    try {
+      await appBannersApi.create(file, link.trim());
+      toast.success("App banner added. It shows in the app straight away.");
+      setFile(null);
+      setLink("");
+      load();
+    } catch (err) {
+      toast.error(getErrorMessage(err));
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  const update = async (banner, changes, message) => {
+    try {
+      await appBannersApi.update(banner.id, changes);
+      toast.success(message);
+      load();
+    } catch (err) {
+      toast.error(getErrorMessage(err));
+    }
+  };
+
+  const move = async (index, dir) => {
+    const next = [...items];
+    const [moved] = next.splice(index, 1);
+    next.splice(index + dir, 0, moved);
+    setItems(next);
+    try {
+      await appBannersApi.reorder(next.map((b) => b.id));
+    } catch (err) {
+      toast.error(getErrorMessage(err));
+      load();
+    }
+  };
+
+  return (
+    <div className="space-y-6">
+      <form onSubmit={handleUpload} className="bg-white rounded-2xl border border-line shadow-2xs p-5 space-y-4">
+        <div className="flex items-start gap-3">
+          <div className="w-10 h-10 rounded-xl bg-accent-light text-accent-dark flex items-center justify-center shrink-0">
+            <Smartphone size={18} />
+          </div>
+          <div>
+            <p className="text-sm font-semibold text-ink">Add an app banner</p>
+            <p className="text-xs text-muted mt-0.5">
+              Shown on the mobile app's home screen only. Website banners are managed in “Hero Banners”.
+            </p>
+            <p className="text-xs text-muted mt-1">
+              Size: <span className="font-mono font-semibold text-accent">1200 × 600 px</span> (2:1). Keep text and
+              products away from the edges.
+            </p>
+          </div>
+        </div>
+        <div className="grid sm:grid-cols-2 gap-4">
+          <Field label="Banner image" required>
+            <input
+              type="file"
+              accept="image/png,image/jpeg,image/jpg,image/webp"
+              className="input file:mr-3 file:rounded-md file:border-0 file:bg-panel file:px-3 file:py-1 file:text-sm"
+              onChange={(e) => setFile(e.target.files?.[0] || null)}
+            />
+          </Field>
+          <Field label="Opens when tapped (optional)" hint="App path like /product/iphone-13 or /shop, or an https:// link. Empty opens the Shop.">
+            <Input value={link} onChange={(e) => setLink(e.target.value)} placeholder="/shop" />
+          </Field>
+        </div>
+        {file && (
+          <div className="rounded-xl overflow-hidden border border-line bg-panel aspect-[2/1] max-w-sm">
+            <img src={URL.createObjectURL(file)} alt="Preview" className="w-full h-full object-cover" />
+          </div>
+        )}
+        <div className="flex justify-end">
+          <button className="btn-primary" disabled={isUploading || !file}>
+            {isUploading ? <Loader2 size={15} className="animate-spin" /> : <UploadCloud size={15} />}
+            {isUploading ? "Uploading…" : "Add banner"}
+          </button>
+        </div>
+      </form>
+
+      {isLoading ? (
+        <div className="p-12 flex justify-center bg-white rounded-2xl border border-line">
+          <Loader2 size={22} className="animate-spin text-accent" />
+        </div>
+      ) : items.length === 0 ? (
+        <div className="bg-white rounded-2xl border border-line shadow-2xs p-8">
+          <EmptyState
+            icon={ImageIcon}
+            title="No app banners yet"
+            description="Until you add one, the app shows the website's hero banners."
+          />
+        </div>
+      ) : (
+        <div className="space-y-3">
+          <p className="text-xs text-muted">Shown in this order. Use the arrows to reorder.</p>
+          {items.map((b, i) => (
+            <div key={b.id} className="bg-white rounded-2xl border border-line shadow-2xs p-3 flex flex-col sm:flex-row sm:items-center gap-4">
+              <div className="w-full sm:w-56 aspect-[2/1] rounded-xl overflow-hidden bg-panel shrink-0">
+                <img src={b.imageUrl} alt="App banner" className={`w-full h-full object-cover ${b.isActive ? "" : "opacity-40"}`} />
+              </div>
+              <div className="flex-1 min-w-0 space-y-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-mono text-muted">#{i + 1}</span>
+                  <Badge tone={b.isActive ? "verify" : "neutral"}>{b.isActive ? "Live in app" : "Hidden"}</Badge>
+                </div>
+                <p className="text-sm text-ink flex items-center gap-1.5 truncate">
+                  <Link2 size={14} className="text-muted shrink-0" />
+                  {b.link || <span className="text-muted">Opens the Shop</span>}
+                </p>
+              </div>
+              <div className="flex items-center gap-1 sm:flex-col sm:items-end">
+                <div className="flex gap-1">
+                  <button className="btn-ghost !px-2 !py-1.5" title="Move up" disabled={i === 0} onClick={() => move(i, -1)}>
+                    <ArrowUp size={15} />
+                  </button>
+                  <button className="btn-ghost !px-2 !py-1.5" title="Move down" disabled={i === items.length - 1} onClick={() => move(i, 1)}>
+                    <ArrowDown size={15} />
+                  </button>
+                  <button className="btn-ghost !px-2 !py-1.5" title="Edit" onClick={() => setEditing(b)}>
+                    <Pencil size={15} />
+                  </button>
+                  <button
+                    className="btn-ghost !px-2 !py-1.5"
+                    title={b.isActive ? "Hide from app" : "Show in app"}
+                    onClick={() => update(b, { isActive: !b.isActive }, b.isActive ? "Banner hidden from the app." : "Banner is live in the app.")}
+                  >
+                    {b.isActive ? <EyeOff size={15} /> : <CheckCircle2 size={15} />}
+                  </button>
+                  <button className="btn-ghost !px-2 !py-1.5 hover:!text-danger" title="Delete" onClick={() => setDeleteTarget(b)}>
+                    <Trash2 size={15} />
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {editing && (
+        <AppBannerModal
+          banner={editing}
+          onClose={() => setEditing(null)}
+          onSave={async (changes) => {
+            await update(editing, changes, "App banner updated.");
+            setEditing(null);
+          }}
+        />
+      )}
+
+      <ConfirmDialog
+        open={!!deleteTarget}
+        onClose={() => setDeleteTarget(null)}
+        title="Delete app banner?"
+        description="It will be removed from the app's home screen."
+        confirmLabel="Delete"
+        danger
+        onConfirm={async () => {
+          try {
+            await appBannersApi.remove(deleteTarget.id);
+            toast.success("App banner deleted.");
+            setDeleteTarget(null);
+            load();
+          } catch (err) {
+            toast.error(getErrorMessage(err));
+          }
+        }}
+      />
+    </div>
+  );
+}
+
+function AppBannerModal({ banner, onClose, onSave }) {
+  const [link, setLink] = useState(banner.link || "");
+  const [file, setFile] = useState(null);
+  const [isSaving, setIsSaving] = useState(false);
+
+  return (
+    <Modal
+      open
+      onClose={onClose}
+      title="Edit app banner"
+      footer={
+        <>
+          <button className="btn-secondary" onClick={onClose}>
+            Cancel
+          </button>
+          <button
+            className="btn-primary"
+            disabled={isSaving}
+            onClick={async () => {
+              setIsSaving(true);
+              await onSave({ link: link.trim(), file: file || undefined });
+              setIsSaving(false);
+            }}
+          >
+            {isSaving ? "Saving…" : "Save"}
+          </button>
+        </>
+      }
+    >
+      <div className="space-y-4">
+        <div className="rounded-xl overflow-hidden border border-line bg-panel aspect-[2/1]">
+          <img src={file ? URL.createObjectURL(file) : banner.imageUrl} alt="App banner" className="w-full h-full object-cover" />
+        </div>
+        <Field label="Replace image (optional)" hint="1200 × 600 px">
+          <input type="file" accept="image/png,image/jpeg,image/jpg,image/webp" className="input" onChange={(e) => setFile(e.target.files?.[0] || null)} />
+        </Field>
+        <Field label="Opens when tapped" hint="App path like /product/iphone-13 or /shop, or an https:// link. Empty opens the Shop.">
+          <Input value={link} onChange={(e) => setLink(e.target.value)} placeholder="/shop" />
+        </Field>
+      </div>
+    </Modal>
+  );
+}
+
