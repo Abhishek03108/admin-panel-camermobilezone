@@ -31,6 +31,7 @@ import ContentPage from "./pages/content/ContentPage.jsx";
 import MediaLibraryPage from "./pages/media/MediaLibraryPage.jsx";
 import SendEmailPage from "./pages/emails/SendEmailPage.jsx";
 import DeveloperMessagesPage from "./pages/developer/DeveloperMessagesPage.jsx";
+import InformAllPage from "./pages/announcements/InformAllPage.jsx";
 import SettingsPage from "./pages/settings/SettingsPage.jsx";
 import NotificationsPage from "./pages/notifications/NotificationsPage.jsx";
 import TicketsPage from "./pages/tickets/TicketsPage.jsx";
@@ -84,6 +85,7 @@ export default function App() {
         <Route path="media" element={<MediaLibraryPage />} />
         <Route path="emails" element={<SendEmailPage />} />
         <Route path="developer-messages" element={<DeveloperMessagesPage />} />
+        <Route path="inform-all" element={<InformAllPage />} />
         <Route path="notifications" element={<NotificationsPage />} />
         <Route path="tickets" element={<TicketsPage />} />
 

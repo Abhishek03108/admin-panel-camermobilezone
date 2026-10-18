@@ -15,6 +15,7 @@ import Pagination from "../../components/common/Pagination.jsx";
 import Modal from "../../components/common/Modal.jsx";
 import ConfirmDialog from "../../components/common/ConfirmDialog.jsx";
 import { Field, Input, Textarea, Checkbox } from "../../components/common/FormField.jsx";
+import ImageUploader from "../../components/common/ImageUploader.jsx";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -27,7 +28,7 @@ const AUDIENCE_LABELS = {
   none: "Only chosen people",
 };
 
-const EMPTY_FORM = { subject: "", message: "", ctaLabel: "", ctaUrl: "" };
+const EMPTY_FORM = { subject: "", message: "", ctaLabel: "", ctaUrl: "", imageUrl: "" };
 
 function parseEmails(text) {
   return [...new Set(text.split(/[\s,;]+/).map((e) => e.trim().toLowerCase()).filter(Boolean))];
@@ -70,6 +71,7 @@ export default function SendEmailPage() {
   const set = (key) => (e) => setForm((f) => ({ ...f, [key]: e.target.value }));
   const payload = () => ({
     ...form,
+    respectOptOut,
     ctaLabel: showButton ? form.ctaLabel : "",
     ctaUrl: showButton ? form.ctaUrl : "",
   });
@@ -186,7 +188,16 @@ export default function SendEmailPage() {
   const columns = [
     { key: "createdAt", header: "Sent on", render: (r) => <span className="whitespace-nowrap">{formatDateTime(r.createdAt)}</span> },
     { key: "subject", header: "Subject", render: (r) => <span className="font-medium text-ink line-clamp-1">{r.subject}</span> },
-    { key: "audience", header: "To", render: (r) => <span className="text-muted whitespace-nowrap">{AUDIENCE_LABELS[r.audience] || r.audience}</span> },
+    {
+      key: "audience",
+      header: "To",
+      render: (r) => (
+        <span className="text-muted whitespace-nowrap">
+          {r.kind === "product" ? "Inform All · " : ""}
+          {AUDIENCE_LABELS[r.audience] || r.audience}
+        </span>
+      ),
+    },
     {
       key: "progress",
       header: "Delivered",
@@ -236,6 +247,13 @@ export default function SendEmailPage() {
             />
           </Field>
 
+          <ImageUploader
+            label="Image (optional) — shown at the top of the email"
+            folder="emails"
+            value={form.imageUrl}
+            onUploaded={(file) => setForm((f) => ({ ...f, imageUrl: file?.url || "" }))}
+          />
+
           <Checkbox label="Add a button (e.g. Shop now)" checked={showButton} onChange={(e) => setShowButton(e.target.checked)} />
           {showButton && (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -274,13 +292,14 @@ export default function SendEmailPage() {
             ))}
           </div>
 
-          {(audience === "users" || audience === "everyone") && (
+          <div>
             <Checkbox
-              label="Skip users who turned off promotional emails"
+              label="Promotional email — skip people who unsubscribed (adds an Unsubscribe link)"
               checked={respectOptOut}
               onChange={(e) => setRespectOptOut(e.target.checked)}
             />
-          )}
+            <p className="text-xs text-muted mt-1 ml-6">Untick for important service notices that everyone must get.</p>
+          </div>
 
           <UserPicker picked={pickedUsers} onChange={setPickedUsers} />
 
