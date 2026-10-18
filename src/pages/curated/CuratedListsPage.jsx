@@ -5,7 +5,7 @@ import { trendingApi, recentlyAddedApi, dealsOfWeekApi } from "../../api/curated
 import { productsApi } from "../../api/products.api.js";
 import { getErrorMessage } from "../../api/axiosClient.js";
 import { useToast } from "../../context/ToastContext.jsx";
-import { formatCurrency } from "../../utils/formatters.js";
+import { formatCurrency, formatDate } from "../../utils/formatters.js";
 import Seo from "../../components/common/Seo.jsx";
 import PageHeader from "../../components/common/PageHeader.jsx";
 import EmptyState from "../../components/common/EmptyState.jsx";
@@ -69,7 +69,7 @@ export default function CuratedListsPage() {
           className="space-y-6"
         >
           {activeTab === "deals" && <DealsSettingsCard />}
-          <CuratedListManager api={tabConfig.api} label={tabConfig.label} />
+          <CuratedListManager api={tabConfig.api} label={tabConfig.label} showAddedDate={activeTab === "recent"} />
         </motion.div>
       </AnimatePresence>
     </div>
@@ -238,7 +238,7 @@ function toLocalInput(iso) {
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
 
-function CuratedListManager({ api, label }) {
+function CuratedListManager({ api, label, showAddedDate = false }) {
   const [entries, setEntries] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [pickerOpen, setPickerOpen] = useState(false);
@@ -359,6 +359,14 @@ function CuratedListManager({ api, label }) {
                   <p className="text-base font-bold text-ink truncate font-heading">{entry.product?.name || "Unnamed Product"}</p>
                   <p className="text-sm font-mono font-semibold text-muted mt-0.5">{formatCurrency(entry.product?.sellingPrice || 0)}</p>
                 </div>
+
+                {/* Date the product was added */}
+                {showAddedDate && (
+                  <span className="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold text-muted bg-panel border border-line px-2.5 py-1 rounded-lg shrink-0">
+                    <Calendar size={13} />
+                    Added {formatDate(entry.product?.createdAt || entry.createdAt)}
+                  </span>
+                )}
 
                 {/* Action Reorder / Delete Controls */}
                 <div className="flex items-center gap-1.5">
