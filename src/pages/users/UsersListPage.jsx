@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Eye, Search, Loader2, Users, Calendar } from "lucide-react";
+import { Eye, Search, Loader2, Users, Calendar, MailPlus } from "lucide-react";
 import { usersApi } from "../../api/users.api.js";
 import { getErrorMessage } from "../../api/axiosClient.js";
 import { useToast } from "../../context/ToastContext.jsx";
@@ -10,6 +10,8 @@ import PageHeader from "../../components/common/PageHeader.jsx";
 import DataTable from "../../components/common/DataTable.jsx";
 import Badge from "../../components/common/Badge.jsx";
 import Pagination from "../../components/common/Pagination.jsx";
+import ConfirmDialog from "../../components/common/ConfirmDialog.jsx";
+import WelcomeEmailStatus from "./WelcomeEmailStatus.jsx";
 
 // Helper for smooth manual loader delays to prevent layout flickering
 const delay = (ms = 400) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -20,7 +22,48 @@ export default function UsersListPage() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [welcome, setWelcome] = useState(null); // { pending, bulk: { running, total, sent, failed } }
+  const [confirmBulk, setConfirmBulk] = useState(false);
   const toast = useToast();
+
+  const loadWelcome = async () => {
+    try {
+      const res = await usersApi.welcomeSummary();
+      setWelcome(res.data.data);
+      return res.data.data;
+    } catch {
+      return null;
+    }
+  };
+
+  // While a bulk send runs, refresh progress every few seconds; reload the list when it ends.
+  useEffect(() => {
+    loadWelcome();
+  }, []);
+  useEffect(() => {
+    if (!welcome?.bulk?.running) return;
+    const t = setInterval(async () => {
+      const next = await loadWelcome();
+      if (next && !next.bulk.running) load(page);
+    }, 3000);
+    return () => clearInterval(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [welcome?.bulk?.running]);
+
+  const sendAllWelcomes = async () => {
+    try {
+      const res = await usersApi.sendPendingWelcomes();
+      toast.success(res.data.message);
+      await loadWelcome();
+    } catch (err) {
+      toast.error(getErrorMessage(err));
+    }
+  };
+
+  const markWelcomed = (id, sentAt) => {
+    setUsers((list) => list.map((u) => (u.id === id ? { ...u, welcomeEmailSentAt: sentAt } : u)));
+    loadWelcome();
+  };
 
   const load = async (p = page) => {
     setIsLoading(true);
@@ -62,6 +105,34 @@ export default function UsersListPage() {
         title={<span className="font-heading text-2xl md:text-3xl font-extrabold tracking-tight text-ink">Users</span>} 
         description="Customer accounts registered on the storefront." 
       />
+
+      {/* Welcome emails — each customer is welcomed only once */}
+      {welcome?.bulk?.running ? (
+        <div className="flex items-center gap-3 rounded-2xl border border-accent/25 bg-accent/5 px-5 py-4 text-sm">
+          <Loader2 size={18} className="animate-spin text-accent shrink-0" />
+          <span className="font-semibold text-ink">
+            Sending welcome emails… {welcome.bulk.sent + welcome.bulk.failed} of {welcome.bulk.total}
+          </span>
+          {welcome.bulk.failed > 0 && <span className="text-danger font-mono text-xs">{welcome.bulk.failed} failed</span>}
+        </div>
+      ) : welcome?.pending > 0 ? (
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 justify-between rounded-2xl border border-accent/25 bg-accent/5 px-5 py-4">
+          <div className="flex items-center gap-3 text-sm">
+            <MailPlus size={20} className="text-accent shrink-0" />
+            <span>
+              <span className="font-bold text-ink">{welcome.pending}</span>{" "}
+              <span className="text-ink">{welcome.pending === 1 ? "customer hasn't" : "customers haven't"} received a welcome email yet.</span>
+            </span>
+          </div>
+          <button
+            type="button"
+            onClick={() => setConfirmBulk(true)}
+            className="shrink-0 rounded-xl bg-accent px-4 py-2 text-sm font-semibold text-white hover:bg-accent/90 transition-all cursor-pointer"
+          >
+            Send to all {welcome.pending}
+          </button>
+        </div>
+      ) : null}
 
       <div className="bg-white rounded-2xl border border-line shadow-2xs overflow-hidden">
         {/* Search Header Bar */}
@@ -138,6 +209,11 @@ export default function UsersListPage() {
               },
             },
             {
+              key: "welcome",
+              header: "Welcome Email",
+              render: (u) => <WelcomeEmailStatus user={u} onWelcomed={(at) => markWelcomed(u.id, at)} />,
+            },
+            {
               key: "status",
               header: "Account Status",
               render: (u) => (
@@ -169,6 +245,18 @@ export default function UsersListPage() {
           <Pagination meta={meta} onPageChange={setPage} />
         </div>
       </div>
+
+      <ConfirmDialog
+        open={confirmBulk}
+        onClose={() => setConfirmBulk(false)}
+        title={`Send welcome email to ${welcome?.pending ?? 0} customers?`}
+        description="Each customer who hasn't been welcomed yet gets the welcome email once. Customers who were already welcomed are skipped."
+        confirmLabel="Send welcome emails"
+        onConfirm={async () => {
+          setConfirmBulk(false);
+          await sendAllWelcomes();
+        }}
+      />
     </div>
   );
 }
