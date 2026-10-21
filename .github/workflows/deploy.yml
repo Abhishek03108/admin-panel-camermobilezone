@@ -15,7 +15,7 @@ jobs:
       - name: Check connection to server
         env:
           HOST: ${{ secrets.SERVER_IP }}
-          PORT: "22"
+          PORT: ${{ secrets.SSH_PORT }}
           KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
           echo "GitHub runner public IP: $(curl -s -m 10 https://api.ipify.org)"
@@ -39,6 +39,7 @@ jobs:
         with:
           host: ${{ secrets.SERVER_IP }}
           username: root
+          port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           timeout: 60s
           debug: true
