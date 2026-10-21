@@ -13,6 +13,7 @@ import {
   ArrowUpRight,
   ShieldAlert,
   MessageSquare,
+  Server,
 } from "lucide-react";
 import { dashboardApi } from "../api/dashboard.api.js";
 import { getErrorMessage } from "../api/axiosClient.js";
@@ -156,6 +157,19 @@ export default function Dashboard() {
           title="Dashboard"
           description="A real-time metrics overview of store operations and customer activity."
         />
+      </motion.div>
+
+      <motion.div variants={sectionVariants}>
+        <div className="card p-4 flex items-start gap-3 border-accent/30 bg-accent-light/40">
+          <Server size={18} className="text-accent shrink-0 mt-0.5" />
+          <div className="text-sm">
+            <p className="font-semibold text-ink">We have moved to a new server</p>
+            <p className="text-muted mt-0.5">
+              The website, admin panel and API now run on the new server (160.250.205.184) since 21 October 2026. If
+              anything looks wrong, please report it.
+            </p>
+          </div>
+        </div>
       </motion.div>
 
       {/* Main Metrics Grid */}
