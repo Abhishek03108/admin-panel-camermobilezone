@@ -4,12 +4,35 @@ on:
   push:
     branches:
       - main
+  # Lets you re-run the deploy from the Actions tab without pushing code.
+  workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Check connection to server
+        env:
+          HOST: ${{ secrets.SERVER_IP }}
+          PORT: "22"
+          KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          echo "GitHub runner public IP: $(curl -s -m 10 https://api.ipify.org)"
+          # Spaced out so GitHub doesn't hide it as *** (the server IP is not secret)
+          echo "Server address in secrets: $(printf '%s' "$HOST" | sed 's/./& /g')"
+          echo "SSH port: $(printf '%s' "${PORT:-22}" | sed 's/./& /g')"
+          printf '%s\n' "$KEY" > /tmp/deploy_key && chmod 600 /tmp/deploy_key
+          echo "Deploy key fingerprint: $(ssh-keygen -lf /tmp/deploy_key 2>&1)"
+          rm -f /tmp/deploy_key
+          for p in "${PORT:-22}" 80 443; do
+            if timeout 10 bash -c "</dev/tcp/$HOST/$p" 2>/dev/null; then
+              echo "Port $(printf '%s' "$p" | sed 's/./& /g'): REACHABLE"
+            else
+              echo "Port $(printf '%s' "$p" | sed 's/./& /g'): NOT REACHABLE (timeout or refused)"
+            fi
+          done
+
       - name: Deploy to VPS
         uses: appleboy/ssh-action@v1.2.0
 
@@ -17,6 +40,8 @@ jobs:
           host: ${{ secrets.SERVER_IP }}
           username: root
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          timeout: 60s
+          debug: true
 
           script: |
             set -e
