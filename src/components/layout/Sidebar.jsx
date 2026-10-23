@@ -22,6 +22,7 @@ import {
   Bell,
   LifeBuoy,
   UserX,
+  UserMinus,
   X,
 } from "lucide-react";
 
@@ -54,6 +55,7 @@ const NAV_SECTIONS = [
     items: [
       { to: "/users", label: "Users", icon: Users, end: true },
       { to: "/tickets", label: "Support Queries", icon: LifeBuoy },
+      { to: "/users/deactivated", label: "Deactivated Accounts", icon: UserMinus },
       { to: "/users/deletions", label: "Account Deletions", icon: UserX },
     ],
   },

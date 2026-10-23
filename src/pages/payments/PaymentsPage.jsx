@@ -82,12 +82,12 @@ export default function PaymentsPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
-  const verify = async (id, action, rejectionReason) => {
+  const verify = async (id, action, rejectionReason, deactivateAccount) => {
     if (processingId) return; // a verify/reject request is already in flight
     setProcessingId(id);
     try {
-      await paymentsApi.verify(id, action, rejectionReason);
-      toast.success(`Payment ${action.toLowerCase()}.`);
+      const res = await paymentsApi.verify(id, action, rejectionReason, deactivateAccount);
+      toast.success(res.data?.message || `Payment ${action.toLowerCase()}.`);
       load();
     } catch (err) {
       toast.error(getErrorMessage(err));
@@ -258,8 +258,8 @@ export default function PaymentsPage() {
           <RejectModal
             payment={rejectTarget}
             onClose={() => setRejectTarget(null)}
-            onConfirm={(reason) => {
-              verify(rejectTarget.id, "Rejected", reason);
+            onConfirm={(reason, deactivateAccount) => {
+              verify(rejectTarget.id, "Rejected", reason, deactivateAccount);
               setRejectTarget(null);
             }}
           />
@@ -272,11 +272,15 @@ export default function PaymentsPage() {
 {/* Enhanced Animated Reject Modal */}
 function RejectModal({ payment, onClose, onConfirm }) {
   const [reason, setReason] = useState("");
+  // On by default: a fake / unrelated screenshot deactivates the account.
+  // Untick for honest mistakes (wrong amount, blurry screenshot).
+  const [deactivate, setDeactivate] = useState(true);
   const PRESETS = [
-    "Amount Mismatch",
-    "Screenshot Unclear / Cropped",
-    "Invalid Reference ID",
-    "Duplicate Submission",
+    { label: "Fake / unrelated screenshot", deactivate: true },
+    { label: "Duplicate Submission", deactivate: true },
+    { label: "Invalid Reference ID", deactivate: true },
+    { label: "Amount Mismatch", deactivate: false },
+    { label: "Screenshot Unclear / Cropped", deactivate: false },
   ];
 
   return (
@@ -294,7 +298,7 @@ function RejectModal({ payment, onClose, onConfirm }) {
           </button>
           <button
             className="inline-flex items-center gap-1.5 px-5 py-2.5 text-xs font-bold text-white bg-red-600 hover:bg-red-700 rounded-xl transition-all shadow-xs cursor-pointer"
-            onClick={() => onConfirm(reason || "Screenshot unclear or invalid.")}
+            onClick={() => onConfirm(reason || "Screenshot unclear or invalid.", deactivate)}
           >
             <XCircle size={14} /> Reject Payment
           </button>
@@ -309,7 +313,7 @@ function RejectModal({ payment, onClose, onConfirm }) {
           <div className="text-xs">
             <p className="font-bold text-red-900">Rejection Notice</p>
             <p className="text-red-600 font-medium text-[11px] mt-0.5">
-              The user will be notified via email with the reason specified below.
+              The order is cancelled and its items go back in stock. The customer is emailed the reason below.
             </p>
           </div>
         </div>
@@ -319,12 +323,15 @@ function RejectModal({ payment, onClose, onConfirm }) {
           <div className="flex flex-wrap gap-1.5">
             {PRESETS.map((preset) => (
               <button
-                key={preset}
+                key={preset.label}
                 type="button"
-                onClick={() => setReason(preset)}
+                onClick={() => {
+                  setReason(preset.label);
+                  setDeactivate(preset.deactivate);
+                }}
                 className="text-[11px] font-semibold px-2.5 py-1 rounded-lg bg-gray-100 hover:bg-orange-50 hover:text-[#F97316] text-gray-600 transition-colors border border-gray-200/60 cursor-pointer"
               >
-                + {preset}
+                + {preset.label}
               </button>
             ))}
           </div>
@@ -338,6 +345,26 @@ function RejectModal({ payment, onClose, onConfirm }) {
             className="w-full text-xs font-medium text-gray-900 placeholder:text-gray-400 bg-white border border-gray-200 rounded-xl p-3 focus:border-red-500 focus:ring-2 focus:ring-red-100 transition-all outline-none min-h-[90px] resize-y"
           />
         </Field>
+
+        <label
+          className={`flex items-start gap-3 rounded-2xl border p-3.5 cursor-pointer transition-colors ${
+            deactivate ? "border-red-200 bg-red-50/70" : "border-gray-200 bg-gray-50"
+          }`}
+        >
+          <input
+            type="checkbox"
+            checked={deactivate}
+            onChange={(e) => setDeactivate(e.target.checked)}
+            className="mt-0.5 h-4 w-4 accent-red-600"
+          />
+          <span className="text-xs">
+            <span className="block font-bold text-gray-900">Deactivate this customer's account (fake / unrelated screenshot)</span>
+            <span className="block mt-0.5 text-gray-600 font-medium">
+              They can't sign in or order, and their other unverified orders are cancelled and restocked. They can
+              request reactivation. Untick for honest mistakes such as a wrong amount or a blurry screenshot.
+            </span>
+          </span>
+        </label>
       </div>
     </Modal>
   );

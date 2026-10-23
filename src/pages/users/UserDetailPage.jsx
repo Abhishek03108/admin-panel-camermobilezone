@@ -11,6 +11,7 @@ import Badge from "../../components/common/Badge.jsx";
 import DataTable from "../../components/common/DataTable.jsx";
 import ConfirmDialog from "../../components/common/ConfirmDialog.jsx";
 import WelcomeEmailStatus from "./WelcomeEmailStatus.jsx";
+import { deactivationLabel } from "./deactivation.js";
 
 // Helper for smooth manual loader delays to prevent flickering UI state
 const delay = (ms = 350) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -84,6 +85,17 @@ export default function UserDetailPage() {
           <Badge tone={user.isActive ? "verify" : "danger"}>
             {user.isActive ? "Active Account" : "Deactivated"}
           </Badge>
+          {!user.isActive && (
+            <p className="mt-2 text-xs text-muted">
+              {deactivationLabel(user.deactivationReason).text}
+              {user.deactivationNote ? ` — ${user.deactivationNote}` : ""}
+            </p>
+          )}
+          {user.paymentRejectionCount > 0 && (
+            <p className="mt-2 inline-block rounded-lg bg-danger/10 px-2.5 py-1 text-xs font-bold text-danger">
+              ⚠ Payment rejected ×{user.paymentRejectionCount}
+            </p>
+          )}
 
           <div className="text-left mt-6 pt-6 border-t border-line space-y-3.5 text-sm">
             <div className="flex items-center gap-3 text-muted">
@@ -110,6 +122,7 @@ export default function UserDetailPage() {
             </div>
           </div>
 
+          {user.deactivationReason !== "DELETED" && (
           <button
             className={`w-full mt-6 py-2.5 px-4 rounded-xl font-semibold text-sm transition-all cursor-pointer ${
               user.isActive
@@ -120,6 +133,7 @@ export default function UserDetailPage() {
           >
             {user.isActive ? "Deactivate Account" : "Reactivate Account"}
           </button>
+          )}
         </div>
 
         {/* Recent Orders Section */}

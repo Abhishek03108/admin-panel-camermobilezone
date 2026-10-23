@@ -12,6 +12,7 @@ import Badge from "../../components/common/Badge.jsx";
 import Pagination from "../../components/common/Pagination.jsx";
 import ConfirmDialog from "../../components/common/ConfirmDialog.jsx";
 import WelcomeEmailStatus from "./WelcomeEmailStatus.jsx";
+import { deactivationLabel } from "./deactivation.js";
 
 // Helper for smooth manual loader delays to prevent layout flickering
 const delay = (ms = 400) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -217,9 +218,17 @@ export default function UsersListPage() {
               key: "status",
               header: "Account Status",
               render: (u) => (
-                <Badge tone={u.isActive ? "verify" : "danger"}>
-                  {u.isActive ? "Active" : "Deactivated"}
-                </Badge>
+                <div className="space-y-1">
+                  <Badge tone={u.isActive ? "verify" : "danger"}>
+                    {u.isActive ? "Active" : "Deactivated"}
+                  </Badge>
+                  {!u.isActive && u.deactivationReason && (
+                    <p className="text-xs text-muted">{deactivationLabel(u.deactivationReason).text}</p>
+                  )}
+                  {u.paymentRejectionCount > 0 && (
+                    <p className="text-xs font-semibold text-danger">Payment rejected ×{u.paymentRejectionCount}</p>
+                  )}
+                </div>
               ),
             },
             {
