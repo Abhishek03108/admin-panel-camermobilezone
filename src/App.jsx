@@ -37,6 +37,7 @@ import NotificationsPage from "./pages/notifications/NotificationsPage.jsx";
 import TicketsPage from "./pages/tickets/TicketsPage.jsx";
 import AccountDeletionsPage from "./pages/users/AccountDeletionsPage.jsx";
 import DeactivatedUsersPage from "./pages/users/DeactivatedUsersPage.jsx";
+import PlatformUsagePage from "./pages/users/PlatformUsagePage.jsx";
 
 import Scan from "./pages/auth/Scan.jsx";
 import QrLogin from "./pages/auth/QrLogin.jsx";
@@ -79,6 +80,7 @@ export default function App() {
         <Route path="users" element={<UsersListPage />} />
         <Route path="users/deletions" element={<AccountDeletionsPage />} />
         <Route path="users/deactivated" element={<DeactivatedUsersPage />} />
+        <Route path="users/usage" element={<PlatformUsagePage />} />
         <Route path="users/:id" element={<UserDetailPage />} />
 
         <Route path="contact-messages" element={<ContactMessagesPage />} />

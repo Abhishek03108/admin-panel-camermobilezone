@@ -13,6 +13,7 @@ import Pagination from "../../components/common/Pagination.jsx";
 import ConfirmDialog from "../../components/common/ConfirmDialog.jsx";
 import WelcomeEmailStatus from "./WelcomeEmailStatus.jsx";
 import { deactivationLabel } from "./deactivation.js";
+import PlatformBadges from "./PlatformBadges.jsx";
 
 // Helper for smooth manual loader delays to prevent layout flickering
 const delay = (ms = 400) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -208,6 +209,11 @@ export default function UsersListPage() {
                   </div>
                 );
               },
+            },
+            {
+              key: "uses",
+              header: "Uses",
+              render: (u) => <PlatformBadges user={u} showLast={false} />,
             },
             {
               key: "welcome",

@@ -6,6 +6,8 @@ export const usersApi = {
   setActiveStatus: (id, isActive, note) => apiClient.patch(`/users/${id}/status`, { isActive, ...(note ? { note } : {}) }),
   // Deactivated accounts (fake payment, admin, self) with their latest reactivation request.
   listDeactivated: (params) => apiClient.get("/users/deactivated", { params }),
+  // App vs website usage summary + customers with the app open right now.
+  platformUsage: () => apiClient.get("/users/platform-usage"),
   handleReactivationRequest: (id, action, adminNote) =>
     apiClient.patch(`/users/reactivation-requests/${id}`, { action, ...(adminNote ? { adminNote } : {}) }),
   // Welcome email — each customer can be welcomed only once (enforced by the API).

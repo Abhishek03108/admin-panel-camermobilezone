@@ -12,6 +12,7 @@ import DataTable from "../../components/common/DataTable.jsx";
 import ConfirmDialog from "../../components/common/ConfirmDialog.jsx";
 import WelcomeEmailStatus from "./WelcomeEmailStatus.jsx";
 import { deactivationLabel } from "./deactivation.js";
+import PlatformBadges from "./PlatformBadges.jsx";
 
 // Helper for smooth manual loader delays to prevent flickering UI state
 const delay = (ms = 350) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -111,6 +112,10 @@ export default function UserDetailPage() {
               <span className="font-mono">
                 Joined {userJoinedDate ? formatDate(userJoinedDate) : "—"}
               </span>
+            </div>
+            <div className="pt-1">
+              <p className="text-xs font-semibold uppercase tracking-wider text-muted mb-2">Uses</p>
+              <PlatformBadges user={user} />
             </div>
             <div className="pt-1">
               <p className="text-xs font-semibold uppercase tracking-wider text-muted mb-2">Welcome email</p>

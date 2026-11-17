@@ -23,6 +23,7 @@ import {
   LifeBuoy,
   UserX,
   UserMinus,
+  Smartphone,
   X,
 } from "lucide-react";
 
@@ -54,6 +55,7 @@ const NAV_SECTIONS = [
     title: "Customers",
     items: [
       { to: "/users", label: "Users", icon: Users, end: true },
+      { to: "/users/usage", label: "App & Web Usage", icon: Smartphone },
       { to: "/tickets", label: "Support Queries", icon: LifeBuoy },
       { to: "/users/deactivated", label: "Deactivated Accounts", icon: UserMinus },
       { to: "/users/deletions", label: "Account Deletions", icon: UserX },
