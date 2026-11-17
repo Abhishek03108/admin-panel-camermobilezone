@@ -34,6 +34,7 @@ import DeveloperMessagesPage from "./pages/developer/DeveloperMessagesPage.jsx";
 import InformAllPage from "./pages/announcements/InformAllPage.jsx";
 import SettingsPage from "./pages/settings/SettingsPage.jsx";
 import NotificationsPage from "./pages/notifications/NotificationsPage.jsx";
+import AppControlPage from "./pages/appControl/AppControlPage.jsx";
 import TicketsPage from "./pages/tickets/TicketsPage.jsx";
 import AccountDeletionsPage from "./pages/users/AccountDeletionsPage.jsx";
 import DeactivatedUsersPage from "./pages/users/DeactivatedUsersPage.jsx";
@@ -91,6 +92,7 @@ export default function App() {
         <Route path="developer-messages" element={<DeveloperMessagesPage />} />
         <Route path="inform-all" element={<InformAllPage />} />
         <Route path="notifications" element={<NotificationsPage />} />
+        <Route path="app-control" element={<AppControlPage />} />
         <Route path="tickets" element={<TicketsPage />} />
 
         <Route path="settings" element={<SettingsPage />} />

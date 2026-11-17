@@ -25,6 +25,7 @@ import {
   UserMinus,
   Smartphone,
   X,
+  Power,
 } from "lucide-react";
 
 const NAV_SECTIONS = [
@@ -67,6 +68,7 @@ const NAV_SECTIONS = [
       { to: "/contact-messages", label: "Contact Messages", icon: MessageSquare },
       { to: "/newsletter", label: "Newsletter", icon: Mail },
       { to: "/notifications", label: "App Notifications", icon: Bell },
+      { to: "/app-control", label: "App Control", icon: Power },
       { to: "/inform-all", label: "Inform All", icon: Megaphone },
       { to: "/emails", label: "Send Email", icon: Send },
       { to: "/developer-messages", label: "Developer Messages", icon: Code2 },
