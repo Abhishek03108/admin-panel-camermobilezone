@@ -22,7 +22,7 @@ const TYPES = [
 ];
 
 // Every notification shows the shop logo unless the admin picks a product or pastes another image.
-const DEFAULT_IMAGE = "https://www.cameramobilezone.com/app_icon_without_bg.png";
+const DEFAULT_IMAGE = "https://www.cameramobilezone.com/notification-default.png";
 
 const EMPTY = { audience: "all", userEmail: "", type: "promo", title: "", body: "", link: "", imageUrl: DEFAULT_IMAGE };
 
