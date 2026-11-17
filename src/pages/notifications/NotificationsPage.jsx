@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Send, Trash2, Users, User, Search, Package } from "lucide-react";
+import { Send, Trash2, Users, User, Search, Package, X } from "lucide-react";
 import { notificationsApi } from "../../api/notifications.api.js";
 import { productsApi } from "../../api/products.api.js";
+import { usersApi } from "../../api/users.api.js";
 import { getErrorMessage } from "../../api/axiosClient.js";
 import { useToast } from "../../context/ToastContext.jsx";
 import { formatDateTime, timeAgo } from "../../utils/formatters.js";
@@ -75,8 +76,98 @@ function ProductLinkPicker({ onPick }) {
   );
 }
 
+/** Find a customer by name, email or mobile instead of typing their email. */
+function CustomerPicker({ selected, onPick, onClear }) {
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
+
+  useEffect(() => {
+    if (query.trim().length < 2) return setResults([]);
+    setIsSearching(true);
+    const t = setTimeout(async () => {
+      try {
+        const res = await usersApi.list({ search: query.trim(), isActive: "true", limit: 8 });
+        setResults(res.data.data || []);
+      } catch {
+        setResults([]);
+      } finally {
+        setIsSearching(false);
+      }
+    }, 300);
+    return () => clearTimeout(t);
+  }, [query]);
+
+  if (selected) {
+    return (
+      <div className="flex items-center gap-3 rounded-xl border border-line px-3 py-2">
+        <div className="w-8 h-8 rounded-full bg-accent-light text-accent-dark flex items-center justify-center text-sm font-semibold shrink-0">
+          {(selected.fullName || selected.email || "?").charAt(0).toUpperCase()}
+        </div>
+        <div className="min-w-0 flex-1">
+          <p className="text-sm font-medium text-ink line-clamp-1">{selected.fullName || "—"}</p>
+          <p className="text-xs text-muted line-clamp-1">
+            {selected.email}
+            {selected.mobile ? ` · ${selected.mobile}` : ""}
+          </p>
+        </div>
+        <button type="button" className="btn-ghost !px-2 !py-1.5" title="Choose someone else" onClick={onClear}>
+          <X size={15} />
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="relative">
+      <div className="relative">
+        <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
+        <input
+          className="input !pl-9"
+          placeholder="Search by name, email or mobile…"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          autoFocus
+        />
+      </div>
+      {query.trim().length >= 2 && (
+        <div className="absolute z-20 mt-1 w-full card p-1 max-h-72 overflow-y-auto">
+          {results.length === 0 ? (
+            <p className="px-3 py-2 text-sm text-muted">{isSearching ? "Searching…" : "No active customer matches."}</p>
+          ) : (
+            results.map((u) => (
+              <button
+                key={u.id}
+                type="button"
+                className="w-full flex items-center gap-3 text-left px-2 py-2 rounded-lg hover:bg-panel"
+                onClick={() => {
+                  onPick(u);
+                  setQuery("");
+                  setResults([]);
+                }}
+              >
+                <div className="w-8 h-8 rounded-full bg-panel flex items-center justify-center text-sm font-semibold text-ink shrink-0">
+                  {(u.fullName || u.email || "?").charAt(0).toUpperCase()}
+                </div>
+                <div className="min-w-0">
+                  <p className="text-sm text-ink line-clamp-1">{u.fullName || "—"}</p>
+                  <p className="text-xs text-muted line-clamp-1">
+                    {u.email}
+                    {u.mobile ? ` · ${u.mobile}` : ""}
+                  </p>
+                </div>
+              </button>
+            ))
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function NotificationsPage() {
   const [form, setForm] = useState(EMPTY);
+  const [customer, setCustomer] = useState(null);
   const [isSending, setIsSending] = useState(false);
   const [rows, setRows] = useState([]);
   const [meta, setMeta] = useState(null);
@@ -108,13 +199,19 @@ export default function NotificationsPage() {
 
   const handleSend = async (e) => {
     e.preventDefault();
+    if (form.audience === "user" && !customer) {
+      toast.error("Choose a customer first.");
+      return;
+    }
     setIsSending(true);
     try {
       const payload = { ...form };
       if (payload.audience === "all") delete payload.userEmail;
+      else payload.userEmail = customer.email;
       const res = await notificationsApi.send(payload);
       toast.success(res.data.message);
       setForm(EMPTY);
+      setCustomer(null);
       setPage(1);
       load(1);
     } catch (err) {
@@ -234,8 +331,8 @@ export default function NotificationsPage() {
 
         <div className="grid sm:grid-cols-2 gap-4">
           {form.audience === "user" && (
-            <Field label="Customer email" required>
-              <Input type="email" value={form.userEmail} onChange={set("userEmail")} placeholder="customer@example.com" required />
+            <Field label="Customer" required>
+              <CustomerPicker selected={customer} onPick={setCustomer} onClear={() => setCustomer(null)} />
             </Field>
           )}
           <Field label="Type">
@@ -278,7 +375,14 @@ export default function NotificationsPage() {
 
         <div className="flex justify-end">
           <button className="btn-primary" disabled={isSending}>
-            <Send size={15} /> {isSending ? "Sending…" : form.audience === "all" ? "Send to all customers" : "Send"}
+            <Send size={15} />{" "}
+            {isSending
+              ? "Sending…"
+              : form.audience === "all"
+                ? "Send to all customers"
+                : customer
+                  ? `Send to ${customer.fullName || customer.email}`
+                  : "Send"}
           </button>
         </div>
       </form>
