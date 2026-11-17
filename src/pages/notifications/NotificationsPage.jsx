@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Send, Trash2, Users, User, Search, Package, X } from "lucide-react";
+import { Send, Trash2, Users, User, UsersRound, Search, Package, X, RotateCcw } from "lucide-react";
 import { notificationsApi } from "../../api/notifications.api.js";
 import { productsApi } from "../../api/products.api.js";
 import { usersApi } from "../../api/users.api.js";
@@ -21,7 +21,10 @@ const TYPES = [
   { value: "general", label: "General update" },
 ];
 
-const EMPTY = { audience: "all", userEmail: "", type: "promo", title: "", body: "", link: "", imageUrl: "" };
+// Every notification shows the shop logo unless the admin picks a product or pastes another image.
+const DEFAULT_IMAGE = "https://www.cameramobilezone.com/app_icon_without_bg.png";
+
+const EMPTY = { audience: "all", userEmail: "", type: "promo", title: "", body: "", link: "", imageUrl: DEFAULT_IMAGE };
 
 /** Lets the admin pick a product to link to instead of typing its path. */
 function ProductLinkPicker({ onPick }) {
@@ -165,9 +168,108 @@ function CustomerPicker({ selected, onPick, onClear }) {
   );
 }
 
+/** Pick several customers: search, click to add, × to remove. */
+function MultiCustomerPicker({ selected, onChange }) {
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const pickedIds = new Set(selected.map((u) => u.id));
+
+  useEffect(() => {
+    if (query.trim().length < 2) return setResults([]);
+    setIsSearching(true);
+    const t = setTimeout(async () => {
+      try {
+        const res = await usersApi.list({ search: query.trim(), isActive: "true", limit: 10 });
+        setResults(res.data.data || []);
+      } catch {
+        setResults([]);
+      } finally {
+        setIsSearching(false);
+      }
+    }, 300);
+    return () => clearTimeout(t);
+  }, [query]);
+
+  const available = results.filter((u) => !pickedIds.has(u.id));
+
+  return (
+    <div className="space-y-2">
+      {selected.length > 0 && (
+        <div className="flex flex-wrap gap-1.5">
+          {selected.map((u) => (
+            <span
+              key={u.id}
+              className="inline-flex items-center gap-1.5 rounded-full border border-line bg-panel pl-1 pr-1.5 py-1 text-xs"
+              title={u.email}
+            >
+              <span className="w-5 h-5 rounded-full bg-accent-light text-accent-dark flex items-center justify-center text-[10px] font-semibold">
+                {(u.fullName || u.email || "?").charAt(0).toUpperCase()}
+              </span>
+              <span className="text-ink font-medium max-w-[140px] truncate">{u.fullName || u.email}</span>
+              <button
+                type="button"
+                className="text-muted hover:text-danger"
+                title="Remove"
+                onClick={() => onChange(selected.filter((x) => x.id !== u.id))}
+              >
+                <X size={13} />
+              </button>
+            </span>
+          ))}
+          <button type="button" className="text-xs text-muted hover:text-danger px-1" onClick={() => onChange([])}>
+            Clear all
+          </button>
+        </div>
+      )}
+      <div className="relative">
+        <div className="relative">
+          <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
+          <input
+            className="input !pl-9"
+            placeholder={selected.length ? "Add another customer…" : "Search by name, email or mobile…"}
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+        </div>
+        {query.trim().length >= 2 && (
+          <div className="absolute z-20 mt-1 w-full card p-1 max-h-72 overflow-y-auto">
+            {available.length === 0 ? (
+              <p className="px-3 py-2 text-sm text-muted">
+                {isSearching ? "Searching…" : results.length ? "Already added." : "No active customer matches."}
+              </p>
+            ) : (
+              available.map((u) => (
+                <button
+                  key={u.id}
+                  type="button"
+                  className="w-full flex items-center gap-3 text-left px-2 py-2 rounded-lg hover:bg-panel"
+                  onClick={() => onChange([...selected, u])} // keep the search open to add more
+                >
+                  <div className="w-8 h-8 rounded-full bg-panel flex items-center justify-center text-sm font-semibold text-ink shrink-0">
+                    {(u.fullName || u.email || "?").charAt(0).toUpperCase()}
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-sm text-ink line-clamp-1">{u.fullName || "—"}</p>
+                    <p className="text-xs text-muted line-clamp-1">
+                      {u.email}
+                      {u.mobile ? ` · ${u.mobile}` : ""}
+                    </p>
+                  </div>
+                </button>
+              ))
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export default function NotificationsPage() {
   const [form, setForm] = useState(EMPTY);
   const [customer, setCustomer] = useState(null);
+  const [selectedCustomers, setSelectedCustomers] = useState([]);
   const [isSending, setIsSending] = useState(false);
   const [rows, setRows] = useState([]);
   const [meta, setMeta] = useState(null);
@@ -203,15 +305,21 @@ export default function NotificationsPage() {
       toast.error("Choose a customer first.");
       return;
     }
+    if (form.audience === "selected" && selectedCustomers.length === 0) {
+      toast.error("Add at least one customer.");
+      return;
+    }
     setIsSending(true);
     try {
       const payload = { ...form };
-      if (payload.audience === "all") delete payload.userEmail;
-      else payload.userEmail = customer.email;
+      delete payload.userEmail;
+      if (payload.audience === "user") payload.userEmail = customer.email;
+      if (payload.audience === "selected") payload.userIds = selectedCustomers.map((u) => u.id);
       const res = await notificationsApi.send(payload);
       toast.success(res.data.message);
       setForm(EMPTY);
       setCustomer(null);
+      setSelectedCustomers([]);
       setPage(1);
       load(1);
     } catch (err) {
@@ -317,6 +425,7 @@ export default function NotificationsPage() {
           {[
             { value: "all", label: "All customers", icon: Users },
             { value: "user", label: "One customer", icon: User },
+            { value: "selected", label: "Selected customers", icon: UsersRound },
           ].map((opt) => (
             <button
               key={opt.value}
@@ -333,6 +442,15 @@ export default function NotificationsPage() {
           {form.audience === "user" && (
             <Field label="Customer" required>
               <CustomerPicker selected={customer} onPick={setCustomer} onClear={() => setCustomer(null)} />
+            </Field>
+          )}
+          {form.audience === "selected" && (
+            <Field
+              label="Customers"
+              required
+              hint={selectedCustomers.length ? `${selectedCustomers.length} selected` : "Search and click to add as many as you need"}
+            >
+              <MultiCustomerPicker selected={selectedCustomers} onChange={setSelectedCustomers} />
             </Field>
           )}
           <Field label="Type">
@@ -357,8 +475,32 @@ export default function NotificationsPage() {
           <Field label="Opens when tapped" hint="An app path like /product/iphone-13, /shop — or pick a product below. Leave empty for none.">
             <Input value={form.link} onChange={set("link")} placeholder="/product/…" />
           </Field>
-          <Field label="Image URL (optional)">
-            <Input value={form.imageUrl} onChange={set("imageUrl")} placeholder="https://…" />
+          <Field
+            label="Image URL"
+            hint={form.imageUrl === DEFAULT_IMAGE ? "Camera Mobile Zone logo (default) — paste another link to change it" : "Leave empty for no image"}
+          >
+            <div className="flex items-center gap-2">
+              {form.imageUrl ? (
+                <img
+                  src={form.imageUrl}
+                  alt=""
+                  className="w-10 h-10 shrink-0 rounded-lg border border-line bg-panel object-contain"
+                  onError={(e) => (e.currentTarget.style.visibility = "hidden")}
+                  onLoad={(e) => (e.currentTarget.style.visibility = "visible")}
+                />
+              ) : null}
+              <Input value={form.imageUrl} onChange={set("imageUrl")} placeholder="https://…" />
+              {form.imageUrl !== DEFAULT_IMAGE && (
+                <button
+                  type="button"
+                  className="btn-ghost !px-2 !py-1.5 shrink-0"
+                  title="Use the Camera Mobile Zone logo"
+                  onClick={() => setForm((f) => ({ ...f, imageUrl: DEFAULT_IMAGE }))}
+                >
+                  <RotateCcw size={15} />
+                </button>
+              )}
+            </div>
           </Field>
         </div>
         <ProductLinkPicker
@@ -367,7 +509,8 @@ export default function NotificationsPage() {
               ...f,
               type: "product",
               link: `/product/${p.slug}`,
-              imageUrl: f.imageUrl || p.images?.[0]?.imageUrl || "",
+              imageUrl:
+                !f.imageUrl || f.imageUrl === DEFAULT_IMAGE ? p.images?.[0]?.imageUrl || DEFAULT_IMAGE : f.imageUrl,
               title: f.title || p.name,
             }))
           }
@@ -380,9 +523,13 @@ export default function NotificationsPage() {
               ? "Sending…"
               : form.audience === "all"
                 ? "Send to all customers"
-                : customer
-                  ? `Send to ${customer.fullName || customer.email}`
-                  : "Send"}
+                : form.audience === "selected"
+                  ? selectedCustomers.length
+                    ? `Send to ${selectedCustomers.length} customer${selectedCustomers.length === 1 ? "" : "s"}`
+                    : "Send"
+                  : customer
+                    ? `Send to ${customer.fullName || customer.email}`
+                    : "Send"}
           </button>
         </div>
       </form>
