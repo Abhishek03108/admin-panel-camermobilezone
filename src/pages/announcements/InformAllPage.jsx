@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Megaphone, FlaskConical, Send, Loader2, X, ExternalLink, ImageOff, Users } from "lucide-react";
+import { Megaphone, FlaskConical, Send, Loader2, X, ExternalLink, ImageOff, Users, Smartphone } from "lucide-react";
 import { announcementsApi } from "../../api/announcements.api.js";
 import { getErrorMessage } from "../../api/axiosClient.js";
 import { useToast } from "../../context/ToastContext.jsx";
@@ -29,6 +29,8 @@ export default function InformAllPage() {
   const toast = useToast();
   const [items, setItems] = useState([]);
   const [recipientCount, setRecipientCount] = useState(null);
+  const [appStats, setAppStats] = useState(null);
+  const [appComposing, setAppComposing] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [composing, setComposing] = useState(null);
   const [removing, setRemoving] = useState(null);
@@ -40,6 +42,8 @@ export default function InformAllPage() {
       const res = await announcementsApi.list();
       setItems(res.data.data.items || []);
       setRecipientCount(res.data.data.recipientCount);
+      const { appUserCount, pushUserCount, pushEnabled } = res.data.data;
+      setAppStats({ appUserCount, pushUserCount, pushEnabled });
     } catch (err) {
       if (!quiet) toast.error(getErrorMessage(err));
     } finally {
@@ -85,7 +89,7 @@ export default function InformAllPage() {
       <Seo title="Inform All" description="Email every customer about newly added products." />
       <PageHeader
         title="Inform All"
-        description="New products show up here automatically. Press Notify all to email the product's photos and full details to everyone."
+        description="New products show up here automatically. Notify all emails the product's photos and full details to everyone. Notify in app sends it to every customer's app inbox and phone."
       />
 
       <div className="card p-4 flex items-center gap-3 text-sm">
@@ -95,6 +99,21 @@ export default function InformAllPage() {
           except those who unsubscribed from promotional emails.
         </span>
       </div>
+      {appStats && (
+        <div className="card p-4 flex items-center gap-3 text-sm">
+          <Smartphone size={18} className="text-accent shrink-0" />
+          <span className="text-ink">
+            Notify in app reaches <strong>{appStats.appUserCount}</strong> customer(s) in the app's notification screen.{" "}
+            {appStats.pushEnabled ? (
+              <>
+                <strong>{appStats.pushUserCount}</strong> of them also get a phone notification, even with the app closed.
+              </>
+            ) : (
+              <span className="text-danger">Phone push is off on the server (Firebase key not set), so it only shows inside the app.</span>
+            )}
+          </span>
+        </div>
+      )}
 
       {isLoading ? (
         <Loader />
@@ -113,6 +132,7 @@ export default function InformAllPage() {
               item={item}
               disabled={isAnySending}
               onNotify={() => setComposing(item)}
+              onNotifyApp={() => setAppComposing(item)}
               onRemove={() => setRemoving(item)}
             />
           ))}
@@ -131,6 +151,18 @@ export default function InformAllPage() {
         />
       )}
 
+      {appComposing && (
+        <AppNotifyModal
+          item={appComposing}
+          appStats={appStats}
+          onClose={() => setAppComposing(null)}
+          onSent={() => {
+            setAppComposing(null);
+            load({ quiet: true });
+          }}
+        />
+      )}
+
       <ConfirmDialog
         open={!!removing}
         onClose={() => setRemoving(null)}
@@ -144,8 +176,8 @@ export default function InformAllPage() {
   );
 }
 
-function AnnouncementCard({ item, disabled, onNotify, onRemove }) {
-  const { product, lastSend, sendCount } = item;
+function AnnouncementCard({ item, disabled, onNotify, onNotifyApp, onRemove }) {
+  const { product, lastSend, sendCount, lastInAppSend } = item;
   const [tone, label] = lastSend ? STATUS[lastSend.status] || ["accent", lastSend.status] : ["accent", "Not sent yet"];
   const discounted = Number(product.originalPrice) > Number(product.sellingPrice);
 
@@ -180,6 +212,13 @@ function AnnouncementCard({ item, disabled, onNotify, onRemove }) {
             {sendCount > 1 && ` · sent ${sendCount} times`}
           </p>
         )}
+        {lastInAppSend && (
+          <p className="text-xs text-muted">
+            Last sent in app {formatDateTime(lastInAppSend.lastSentAt)} to {lastInAppSend.recipientCount} customer(s)
+            {lastInAppSend.auto && lastInAppSend.sendCount === 1 && " (automatic)"}
+            {lastInAppSend.sendCount > 1 && ` · sent ${lastInAppSend.sendCount} times`}
+          </p>
+        )}
         {product.imageCount === 0 && (
           <p className="text-xs text-danger">This product has no photo — add one before notifying customers.</p>
         )}
@@ -188,6 +227,9 @@ function AnnouncementCard({ item, disabled, onNotify, onRemove }) {
       <div className="flex sm:flex-col gap-2 sm:w-40 shrink-0">
         <button className="btn-primary flex-1 sm:flex-none" onClick={onNotify} disabled={disabled || !product.isActive}>
           <Megaphone size={15} /> {lastSend ? "Notify again" : "Notify all"}
+        </button>
+        <button className="btn-secondary flex-1 sm:flex-none" onClick={onNotifyApp} disabled={!product.isActive}>
+          <Smartphone size={15} /> {lastInAppSend ? "Notify again in app" : "Notify in app"}
         </button>
         <a
           className="btn-secondary flex-1 sm:flex-none"
@@ -287,6 +329,79 @@ function NotifyModal({ item, recipientCount, onClose, onSent }) {
         danger={false}
         title={`Email ${recipientCount} people about ${item.product.name}?`}
         description="This can't be undone. Emails go out in the background — you can leave this page."
+        confirmLabel="Send now"
+      />
+    </>
+  );
+}
+
+function AppNotifyModal({ item, appStats, onClose, onSent }) {
+  const toast = useToast();
+  const [title, setTitle] = useState(item.inAppDefaultTitle);
+  const [body, setBody] = useState(item.inAppDefaultBody);
+  const [isSending, setIsSending] = useState(false);
+  const [confirming, setConfirming] = useState(false);
+  const count = appStats?.appUserCount ?? "…";
+
+  const handleSend = async () => {
+    setIsSending(true);
+    try {
+      const res = await announcementsApi.sendInApp(item.product.id, { title: title.trim(), body: body.trim() });
+      toast.success(res.data.message);
+      onSent();
+    } catch (err) {
+      toast.error(getErrorMessage(err));
+      setConfirming(false);
+    } finally {
+      setIsSending(false);
+    }
+  };
+
+  return (
+    <>
+      <Modal
+        open
+        onClose={onClose}
+        title={`Notify in app: ${item.product.name}`}
+        size="lg"
+        footer={
+          <button className="btn-primary" onClick={() => setConfirming(true)} disabled={!title.trim() || !body.trim()}>
+            <Send size={15} /> Send to {count} customer(s)
+          </button>
+        }
+      >
+        <div className="space-y-4">
+          <p className="text-sm text-muted">
+            Goes to every customer's notification screen in the app
+            {appStats?.pushEnabled ? " and pops up on their phone, even when the app is closed" : ""}. It shows the
+            product's first photo and opens the product when tapped.
+          </p>
+          {item.product.imageUrl && (
+            <div className="flex items-center gap-3 rounded-xl border border-line p-3">
+              <img src={item.product.imageUrl} alt="" className="w-12 h-12 rounded-lg object-contain bg-white" />
+              <div className="min-w-0">
+                <p className="text-sm font-semibold text-ink line-clamp-1">{title || "Title"}</p>
+                <p className="text-xs text-muted line-clamp-2">{body || "Message"}</p>
+              </div>
+            </div>
+          )}
+          <Field label="Title" required hint={`${title.length}/150`}>
+            <Input value={title} onChange={(e) => setTitle(e.target.value)} maxLength={150} />
+          </Field>
+          <Field label="Message" required hint={`${body.length}/1000`}>
+            <Textarea value={body} onChange={(e) => setBody(e.target.value)} rows={3} maxLength={1000} />
+          </Field>
+        </div>
+      </Modal>
+
+      <ConfirmDialog
+        open={confirming}
+        onClose={() => setConfirming(false)}
+        onConfirm={handleSend}
+        loading={isSending}
+        danger={false}
+        title={`Send ${item.product.name} to ${count} customer(s) in the app?`}
+        description="This can't be undone, but you can delete it for everyone later from App Notifications."
         confirmLabel="Send now"
       />
     </>

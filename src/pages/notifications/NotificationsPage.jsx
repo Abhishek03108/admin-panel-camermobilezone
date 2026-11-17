@@ -153,7 +153,11 @@ export default function NotificationsPage() {
     {
       key: "source",
       header: "Sent by",
-      render: (n) => <Badge tone={n.source === "new_product" ? "verify" : "accent"}>{n.source === "new_product" ? "Auto · new product" : "Admin"}</Badge>,
+      render: (n) => (
+        <Badge tone={n.source === "new_product" ? "verify" : "accent"}>
+          {n.source === "new_product" ? "Auto · new product" : n.source === "admin_product" ? "Admin · Inform All" : "Admin"}
+        </Badge>
+      ),
     },
     {
       key: "reach",
@@ -196,8 +200,19 @@ export default function NotificationsPage() {
       <Seo title="App Notifications" description="Send in-app notifications to customers." />
       <PageHeader
         title="App Notifications"
-        description={`Shows up instantly in the mobile app's notification screen (not on the website). Deleted automatically after ${meta?.retentionDays ?? 15} days.`}
-        actions={meta ? <Badge tone="verify">{meta.liveConnections} app user(s) online now</Badge> : null}
+        description={`Shows up instantly in the mobile app's notification screen and as a phone notification, even when the app is closed (not on the website). Deleted automatically after ${meta?.retentionDays ?? 15} days.`}
+        actions={
+          meta ? (
+            <>
+              <Badge tone="verify">{meta.liveConnections} app user(s) online now</Badge>
+              {meta.pushEnabled ? (
+                <Badge tone="accent">{meta.pushUserCount} with phone push</Badge>
+              ) : (
+                <Badge tone="danger">Phone push off</Badge>
+              )}
+            </>
+          ) : null
+        }
       />
 
       <form onSubmit={handleSend} className="card p-5 space-y-4">
