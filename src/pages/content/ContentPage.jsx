@@ -47,7 +47,7 @@ export default function ContentPage() {
     >
       <Seo title="Site Content" description="Manage testimonials, FAQs, and homepage hero banners." />
       <PageHeader
-        title={<span className="font-heading text-2xl md:text-3xl font-extrabold tracking-tight text-ink">Site Content</span>}
+        title={<span>Site Content</span>}
         description="Configure storefront testimonials, dynamic FAQ accordion lists, and hero banner sliders."
       />
 
@@ -152,12 +152,12 @@ function TestimonialsTab() {
                     {t.avatarUrl ? (
                       <img src={t.avatarUrl} alt="" className="w-10 h-10 rounded-xl object-cover bg-panel border border-line" />
                     ) : (
-                      <div className="w-10 h-10 rounded-xl bg-accent/10 text-accent font-heading font-extrabold flex items-center justify-center text-sm border border-accent/20">
+                      <div className="w-10 h-10 rounded-xl bg-accent/10 text-accent font-heading font-semibold flex items-center justify-center text-sm border border-accent/20">
                         {t.customerName?.[0] || "U"}
                       </div>
                     )}
                     <div>
-                      <p className="text-base font-bold font-heading text-ink">{t.customerName}</p>
+                      <p className="text-base font-semibold font-heading text-ink">{t.customerName}</p>
                       <p className="text-xs font-mono text-muted">{t.location || "Verified Buyer"}</p>
                     </div>
                   </div>
@@ -392,7 +392,7 @@ function FaqsTab() {
             <div key={f.id} className="p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hover:bg-panel/20 transition-colors">
               <div className="flex-1 min-w-0 space-y-1">
                 <div className="flex items-center gap-2">
-                  <p className="text-base font-bold font-heading text-ink">{f.question}</p>
+                  <p className="text-base font-semibold font-heading text-ink">{f.question}</p>
                   <Badge tone={f.isActive ? "verify" : "neutral"}>
                     {f.isActive ? "Active" : "Hidden"}
                   </Badge>
@@ -605,12 +605,12 @@ function HeroBannersTab() {
               <UploadCloud size={20} />
             </div>
             <div>
-              <p className="text-sm font-bold font-heading text-ink">Upload Hero Banner</p>
+              <p className="text-sm font-semibold font-heading text-ink">Upload Hero Banner</p>
               <p className="text-xs font-mono text-muted mt-0.5">
                 For <span className="font-semibold text-ink">CameraMobileZone</span>, create every hero banner as:
               </p>
-              <p className="text-xs font-mono font-bold text-accent mt-1">1920 × 500 px</p>
-              <p className="text-[11px] font-mono text-muted/80 mt-0.5">
+              <p className="text-xs font-mono font-semibold text-accent mt-1">1920 × 500 px</p>
+              <p className="text-xs font-mono text-muted/80 mt-0.5">
                 It gives a premium Apple/Samsung style look here (PNG, JPG, WebP supported)
               </p>
             </div>

@@ -169,7 +169,7 @@ export default function Sidebar({ open, onClose }) {
         {/* Sidebar Header Brand Info */}
         <motion.div
           variants={headerVariants}
-          className="flex items-center justify-between px-5 h-20 border-b border-gray-200 shrink-0"
+          className="flex items-center justify-between px-6 h-20 border-b border-gray-200 shrink-0"
         >
           <div className="flex items-center gap-3.5 min-w-0">
             <motion.img
@@ -181,11 +181,11 @@ export default function Sidebar({ open, onClose }) {
               className="w-10 h-10 object-contain shrink-0 cursor-pointer"
             />
             <div className="leading-tight min-w-0">
-              <p className="text-sm font-bold text-gray-900 font-heading tracking-tight truncate max-w-[150px]">
+              <p className="text-base font-semibold text-ink tracking-[-0.01em] truncate max-w-[160px]">
                 Camera Mobile Zone
               </p>
-              <p className="text-xs font-bold text-[#F97316] uppercase tracking-wider mt-0.5">
-                Admin Panel
+              <p className="text-sm text-muted mt-0.5">
+                Admin panel
               </p>
             </div>
           </div>
@@ -200,16 +200,16 @@ export default function Sidebar({ open, onClose }) {
         </motion.div>
 
         {/* Navigation Item Sections */}
-        <nav className="flex-1 overflow-y-auto px-4 py-5 space-y-6 scrollbar-thin scrollbar-thumb-gray-200">
+        <nav className="flex-1 overflow-y-auto px-4 py-6 space-y-7 scrollbar-thin scrollbar-thumb-gray-200">
           {NAV_SECTIONS.map((section) => (
             <motion.div key={section.title} variants={sectionVariants}>
               <motion.p
                 variants={itemVariants}
-                className="px-3 text-xs font-extrabold uppercase tracking-widest text-gray-400 mb-2.5"
+                className="px-3 text-[13px] font-medium text-gray-400 mb-2"
               >
                 {section.title}
               </motion.p>
-              <div className="space-y-1.5">
+              <div className="space-y-0.5">
                 {section.items.map((item) => (
                   <NavLink
                     key={item.to}
@@ -220,19 +220,19 @@ export default function Sidebar({ open, onClose }) {
                     {({ isActive }) => (
                       <motion.div
                         variants={itemVariants}
-                        whileHover={{ x: 4 }}
+                        whileHover={{ x: 2 }}
                         whileTap={{ scale: 0.98 }}
-                        className={`relative flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-sm font-bold transition-colors duration-150 ${
+                        className={`relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-[15px] transition-colors duration-150 ${
                           isActive
-                            ? "text-[#EA6A0A]"
-                            : "text-gray-700 hover:text-gray-900"
+                            ? "text-[#EA6A0A] font-semibold"
+                            : "text-gray-700 font-normal hover:text-ink hover:bg-panel"
                         }`}
                       >
                         {/* Smooth Sliding Active Background Pill */}
                         {isActive && (
                           <motion.div
                             layoutId="activeNavBackground"
-                            className="absolute inset-0 bg-[#FFF1E6] rounded-xl shadow-xs -z-0"
+                            className="absolute inset-0 bg-[#FFF1E6] rounded-lg -z-0"
                             transition={{
                               type: "spring",
                               stiffness: 380,
@@ -241,32 +241,19 @@ export default function Sidebar({ open, onClose }) {
                           />
                         )}
 
-                        {/* Active Left Indicator Line */}
-                        {isActive && (
-                          <motion.div
-                            layoutId="activeSideNavLine"
-                            className="absolute left-0 top-2 bottom-2 w-1.5 bg-[#F97316] rounded-r-full"
-                            transition={{
-                              type: "spring",
-                              stiffness: 400,
-                              damping: 30,
-                            }}
-                          />
-                        )}
-
                         <motion.div
-                          animate={{ scale: isActive ? 1.1 : 1 }}
+                          animate={{ scale: 1 }}
                           transition={{ type: "spring", stiffness: 400, damping: 25 }}
                           className="z-10 shrink-0"
                         >
                           <item.icon
-                            size={19}
+                            size={18}
                             className={`transition-colors ${
                               isActive ? "text-[#F97316]" : "text-gray-400"
                             }`}
                           />
                         </motion.div>
-                        <span className="z-10 tracking-tight truncate">
+                        <span className="z-10 truncate">
                           {item.label}
                         </span>
                       </motion.div>

@@ -203,7 +203,7 @@ function MultiCustomerPicker({ selected, onChange }) {
               className="inline-flex items-center gap-1.5 rounded-full border border-line bg-panel pl-1 pr-1.5 py-1 text-xs"
               title={u.email}
             >
-              <span className="w-5 h-5 rounded-full bg-accent-light text-accent-dark flex items-center justify-center text-[10px] font-semibold">
+              <span className="w-5 h-5 rounded-full bg-accent-light text-accent-dark flex items-center justify-center text-xs font-semibold">
                 {(u.fullName || u.email || "?").charAt(0).toUpperCase()}
               </span>
               <span className="text-ink font-medium max-w-[140px] truncate">{u.fullName || u.email}</span>

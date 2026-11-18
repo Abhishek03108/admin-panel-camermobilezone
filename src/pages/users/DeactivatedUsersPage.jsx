@@ -94,7 +94,7 @@ export default function DeactivatedUsersPage() {
       <Seo title="Deactivated Accounts" description="Deactivated customer accounts and reactivation requests." />
 
       <PageHeader
-        title={<span className="font-heading text-2xl md:text-3xl font-extrabold tracking-tight text-ink">Deactivated Accounts</span>}
+        title={<span>Deactivated Accounts</span>}
         description="Customers who can't sign in, why, and their reactivation requests. Accounts are deactivated automatically when a payment is rejected as fake."
       />
 
@@ -102,7 +102,7 @@ export default function DeactivatedUsersPage() {
         <div className="flex items-center gap-3 rounded-2xl border border-accent/25 bg-accent/5 px-5 py-4 text-sm">
           <MessageSquareText size={20} className="text-accent shrink-0" />
           <span>
-            <span className="font-bold text-ink">{pending}</span>{" "}
+            <span className="font-semibold text-ink">{pending}</span>{" "}
             {pending === 1 ? "reactivation request is" : "reactivation requests are"} waiting for review.
           </span>
         </div>
@@ -145,11 +145,11 @@ export default function DeactivatedUsersPage() {
               header: "Customer",
               render: (u) => (
                 <div className="flex items-center gap-3 py-1">
-                  <div className="w-10 h-10 rounded-xl bg-danger/10 text-danger font-heading font-extrabold flex items-center justify-center text-sm shrink-0 border border-danger/20">
+                  <div className="w-10 h-10 rounded-xl bg-danger/10 text-danger font-heading font-semibold flex items-center justify-center text-sm shrink-0 border border-danger/20">
                     {initials(u.fullName || "User")}
                   </div>
                   <div className="min-w-0">
-                    <p className="text-sm font-bold text-ink truncate">{u.fullName}</p>
+                    <p className="text-sm font-semibold text-ink truncate">{u.fullName}</p>
                     <p className="text-xs text-muted truncate">{u.email}</p>
                     <p className="text-xs font-mono text-muted">{u.mobile}</p>
                   </div>

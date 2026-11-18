@@ -3,16 +3,12 @@
  * Switched to bold, geometric, enterprise-grade typography.
  */
 export const Fonts = {
-  // Primary readable UI typography
-  body: "Plus Jakarta Sans",
-  // High-impact, bold, authoritative headers
-  heading: "Syne",
-  // Modern geometric display font for big metrics/hero stats
-  display: "Cabinet Grotesk",
-  // Clean developer monospace font
-  mono: "JetBrains Mono",
-  // Elegant serif for editorial accents
-  serif: "Instrument Serif",
+  // One family everywhere: Outfit for headings, body and numbers.
+  body: "Outfit",
+  heading: "Outfit",
+  display: "Outfit",
+  mono: "Outfit",
+  serif: "Outfit",
 };
 
 export const bodyFont = {
@@ -52,6 +48,6 @@ export const fontVariables = `
  * Google Fonts stylesheet URL string for automatic preloading in index.html or main entry.
  */
 export const GOOGLE_FONTS_URL =
-  "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Syne:wght@700;800&display=swap";
+  "https://fonts.googleapis.com/css2?family=Outfit:wght@300..700&display=swap";
 
 export default Fonts;

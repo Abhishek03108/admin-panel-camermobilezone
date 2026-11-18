@@ -76,11 +76,11 @@ export default function UserDetailPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
         {/* User Card Sidebar */}
         <div className="bg-white rounded-2xl border border-line shadow-2xs p-6 text-center">
-          <div className="w-20 h-20 rounded-2xl bg-accent/10 text-accent font-heading font-extrabold flex items-center justify-center text-2xl mx-auto mb-4 border border-accent/20">
+          <div className="w-20 h-20 rounded-2xl bg-accent/10 text-accent font-heading font-semibold flex items-center justify-center text-2xl mx-auto mb-4 border border-accent/20">
             {initials(user.fullName || "User")}
           </div>
 
-          <h2 className="text-xl font-heading font-bold text-ink truncate">{user.fullName || "N/A"}</h2>
+          <h2 className="text-xl font-heading font-semibold text-ink truncate">{user.fullName || "N/A"}</h2>
           <p className="text-xs font-mono text-muted mt-1 mb-3 truncate">{user.publicId || user.id}</p>
 
           <Badge tone={user.isActive ? "verify" : "danger"}>
@@ -93,7 +93,7 @@ export default function UserDetailPage() {
             </p>
           )}
           {user.paymentRejectionCount > 0 && (
-            <p className="mt-2 inline-block rounded-lg bg-danger/10 px-2.5 py-1 text-xs font-bold text-danger">
+            <p className="mt-2 inline-block rounded-lg bg-danger/10 px-2.5 py-1 text-xs font-semibold text-danger">
               ⚠ Payment rejected ×{user.paymentRejectionCount}
             </p>
           )}
@@ -114,11 +114,11 @@ export default function UserDetailPage() {
               </span>
             </div>
             <div className="pt-1">
-              <p className="text-xs font-semibold uppercase tracking-wider text-muted mb-2">Uses</p>
+              <p className="text-sm font-medium text-muted mb-2">Uses</p>
               <PlatformBadges user={user} />
             </div>
             <div className="pt-1">
-              <p className="text-xs font-semibold uppercase tracking-wider text-muted mb-2">Welcome email</p>
+              <p className="text-sm font-medium text-muted mb-2">Welcome email</p>
               <WelcomeEmailStatus
                 user={user}
                 block
@@ -146,7 +146,7 @@ export default function UserDetailPage() {
           <div className="px-6 py-4 border-b border-line bg-panel/30 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <ShoppingBag size={18} className="text-accent" />
-              <h3 className="text-base font-heading font-bold text-ink">Recent Orders</h3>
+              <h3 className="text-base font-heading font-semibold text-ink">Recent Orders</h3>
             </div>
             <span className="text-xs font-mono text-muted">
               Total: {recentOrders.length}
@@ -163,7 +163,7 @@ export default function UserDetailPage() {
                 render: (o) => (
                   <Link
                     to={`/orders/${o.id}`}
-                    className="text-sm font-mono font-bold text-accent hover:underline"
+                    className="text-sm font-mono font-semibold text-accent hover:underline"
                   >
                     {o.publicId || o.id}
                   </Link>
@@ -185,7 +185,7 @@ export default function UserDetailPage() {
                 key: "amount",
                 header: "Amount",
                 render: (o) => (
-                  <span className="text-sm font-mono font-bold text-ink">
+                  <span className="text-sm font-mono font-semibold text-ink">
                     {formatCurrency(o.totalAmount || 0)}
                   </span>
                 ),

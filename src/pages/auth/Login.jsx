@@ -229,7 +229,7 @@ export default function Login() {
             <button
               type="button"
               onClick={() => setToast({ message: "", type: "" })}
-              className="text-xs opacity-70 hover:opacity-100 font-bold px-1"
+              className="text-xs opacity-70 hover:opacity-100 font-semibold px-1"
             >
               ✕
             </button>
@@ -244,7 +244,7 @@ export default function Login() {
             <>
               {/* Login Form Header */}
               <div className="mb-8 text-center">
-                <h1 className="text-xl font-heading font-bold text-white tracking-tight">
+                <h1 className="text-xl font-heading font-semibold text-white tracking-tight">
                   Welcome Back
                 </h1>
                 <p className="text-xs text-slate-400 mt-2 leading-relaxed">
@@ -254,7 +254,7 @@ export default function Login() {
 
               <form onSubmit={handleSubmit} className="space-y-5">
                 <div>
-                  <label className="block text-[11px] font-semibold text-slate-300 uppercase tracking-wider mb-2">
+                  <label className="block text-sm font-medium text-slate-300 mb-2">
                     Email Address
                   </label>
                   <input
@@ -271,7 +271,7 @@ export default function Login() {
 
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <label className="block text-[11px] font-semibold text-slate-300 uppercase tracking-wider">
+                    <label className="block text-sm font-medium text-slate-300">
                       Password
                     </label>
                     <Link
@@ -315,7 +315,7 @@ export default function Login() {
             <>
               {/* 2FA Form Header */}
               <div className="mb-8 text-center">
-                <h1 className="text-xl font-heading font-bold text-white tracking-tight">
+                <h1 className="text-xl font-heading font-semibold text-white tracking-tight">
                   Two-Factor Authentication
                 </h1>
                 <p className="text-xs text-slate-400 mt-2 leading-relaxed">
@@ -326,7 +326,7 @@ export default function Login() {
 
               <form onSubmit={handleVerify2FASubmit} className="space-y-6">
                 <div>
-                  <label className="block text-[11px] font-semibold text-slate-300 uppercase tracking-wider mb-3 text-center">
+                  <label className="block text-sm font-medium text-slate-300 mb-3 text-center">
                     6-Digit Security Code
                   </label>
                   <div className="flex items-center justify-between gap-2" onPaste={handleOtpPaste}>
@@ -341,7 +341,7 @@ export default function Login() {
                         disabled={isSubmitting}
                         onChange={(e) => handleOtpChange(index, e.target.value)}
                         onKeyDown={(e) => handleOtpKeyDown(index, e)}
-                        className="w-11 h-12 text-center text-lg font-bold font-mono text-white bg-slate-800/80 border border-slate-700 rounded-xl focus:border-accent focus:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-accent/20 transition-all duration-200 disabled:opacity-50"
+                        className="w-11 h-12 text-center text-lg font-semibold font-mono text-white bg-slate-800/80 border border-slate-700 rounded-xl focus:border-accent focus:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-accent/20 transition-all duration-200 disabled:opacity-50"
                       />
                     ))}
                   </div>

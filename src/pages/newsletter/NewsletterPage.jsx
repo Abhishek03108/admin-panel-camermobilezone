@@ -70,7 +70,7 @@ export default function NewsletterPage() {
       <Seo title="Newsletter" description="Newsletter subscribers." />
 
       <PageHeader
-        title={<span className="font-heading text-2xl md:text-3xl font-extrabold tracking-tight text-ink">Newsletter Subscribers</span>}
+        title={<span>Newsletter Subscribers</span>}
         description="Manage customer email subscriptions for promotional and update newsletters."
       />
 
@@ -78,7 +78,7 @@ export default function NewsletterPage() {
         {/* Header Filters & Metadata Bar */}
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 p-5 border-b border-line bg-panel/30">
           <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2 text-xs font-mono font-semibold uppercase tracking-wider text-muted">
+            <div className="flex items-center gap-2 text-sm font-medium text-muted">
               <Filter size={14} className="text-accent" />
               <span>Status Filter</span>
             </div>
@@ -95,7 +95,7 @@ export default function NewsletterPage() {
           </div>
 
           <div className="text-xs font-mono font-semibold text-muted self-end sm:self-center">
-            Total Records: <span className="text-ink font-bold">{meta?.total ?? meta?.totalItems ?? subscribers.length}</span>
+            Total Records: <span className="text-ink font-semibold">{meta?.total ?? meta?.totalItems ?? subscribers.length}</span>
           </div>
         </div>
 
@@ -113,7 +113,7 @@ export default function NewsletterPage() {
                   <div className="w-9 h-9 rounded-xl bg-panel border border-line text-muted flex items-center justify-center shrink-0">
                     <Mail size={16} />
                   </div>
-                  <span className="text-base font-bold font-heading text-ink">{s.email}</span>
+                  <span className="text-base font-semibold font-heading text-ink">{s.email}</span>
                   <button
                     onClick={() => handleCopy(s.email)}
                     className="p-1.5 rounded-lg text-muted hover:text-accent hover:bg-panel opacity-0 group-hover:opacity-100 transition-all cursor-pointer"

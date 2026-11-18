@@ -103,7 +103,7 @@ export default function ReviewsPage() {
       <Seo title="Reviews" description="Moderate customer product reviews." />
 
       <PageHeader
-        title={<span className="font-heading text-2xl md:text-3xl font-extrabold tracking-tight text-ink">Product Reviews</span>}
+        title={<span>Product Reviews</span>}
         description="Approve, hide, or moderate customer reviews and ratings across your store."
       />
 
@@ -115,8 +115,8 @@ export default function ReviewsPage() {
           className="bg-white rounded-2xl border border-line p-4 flex items-center justify-between shadow-2xs"
         >
           <div>
-            <p className="text-xs font-mono font-bold text-muted uppercase tracking-wider">Total Reviews</p>
-            <p className="font-heading text-2xl font-extrabold text-ink mt-0.5">{stats.total}</p>
+            <p className="text-sm font-medium text-muted">Total Reviews</p>
+            <p className="font-heading text-2xl font-semibold text-ink mt-0.5">{stats.total}</p>
           </div>
           <div className="w-10 h-10 rounded-xl bg-panel flex items-center justify-center text-muted border border-line shadow-2xs">
             <MessageSquare size={18} />
@@ -130,8 +130,8 @@ export default function ReviewsPage() {
           className="bg-white rounded-2xl border border-line p-4 flex items-center justify-between shadow-2xs"
         >
           <div>
-            <p className="text-xs font-mono font-bold text-muted uppercase tracking-wider">Approved</p>
-            <p className="font-heading text-2xl font-extrabold text-verify mt-0.5">{stats.approved}</p>
+            <p className="text-sm font-medium text-muted">Approved</p>
+            <p className="font-heading text-2xl font-semibold text-verify mt-0.5">{stats.approved}</p>
           </div>
           <div className="w-10 h-10 rounded-xl bg-verifyLight flex items-center justify-center text-verify border border-verify/20 shadow-2xs">
             <CheckCircle2 size={18} />
@@ -145,8 +145,8 @@ export default function ReviewsPage() {
           className="bg-white rounded-2xl border border-line p-4 flex items-center justify-between shadow-2xs"
         >
           <div>
-            <p className="text-xs font-mono font-bold text-muted uppercase tracking-wider">Hidden</p>
-            <p className="font-heading text-2xl font-extrabold text-muted mt-0.5">{stats.hidden}</p>
+            <p className="text-sm font-medium text-muted">Hidden</p>
+            <p className="font-heading text-2xl font-semibold text-muted mt-0.5">{stats.hidden}</p>
           </div>
           <div className="w-10 h-10 rounded-xl bg-panel flex items-center justify-center text-muted border border-line shadow-2xs">
             <EyeOff size={18} />
@@ -207,8 +207,8 @@ export default function ReviewsPage() {
                     <ShoppingBag size={15} />
                   </div>
                   <div className="min-w-0">
-                    <p className="text-sm font-bold text-ink truncate font-heading">{r.product?.name || "Unknown Product"}</p>
-                    <p className="text-[11px] font-mono text-muted truncate">ID: {r.productId || "N/A"}</p>
+                    <p className="text-sm font-semibold text-ink truncate font-heading">{r.product?.name || "Unknown Product"}</p>
+                    <p className="text-xs font-mono text-muted truncate">ID: {r.productId || "N/A"}</p>
                   </div>
                 </div>
               ),
@@ -241,7 +241,7 @@ export default function ReviewsPage() {
                       strokeWidth={1.5} 
                     />
                   ))}
-                  <span className="text-xs font-mono font-bold text-ink ml-1">{r.rating}.0</span>
+                  <span className="text-xs font-mono font-semibold text-ink ml-1">{r.rating}.0</span>
                 </div>
               ),
             },

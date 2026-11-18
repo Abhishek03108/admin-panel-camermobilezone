@@ -401,9 +401,9 @@ function MediaTile({ item, isTrash, isSelected, isSelectable, onToggle, onPrevie
       <div className="px-2.5 py-2 border-t border-line space-y-1">
         <p className="text-xs font-medium text-ink truncate">{item.originalName || item.storageKey.split("/").pop()}</p>
         <div className="flex items-center justify-between gap-1">
-          <span className="text-[11px] text-muted">{formatBytes(item.sizeBytes)}</span>
+          <span className="text-xs text-muted">{formatBytes(item.sizeBytes)}</span>
           {isTrash ? (
-            <span className="text-[11px] font-medium text-danger">{daysUntil(item.purgeAt)}d left</span>
+            <span className="text-xs font-medium text-danger">{daysUntil(item.purgeAt)}d left</span>
           ) : inUse ? (
             <Badge tone="verify">In use</Badge>
           ) : (

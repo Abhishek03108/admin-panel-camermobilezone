@@ -88,7 +88,7 @@ export default function CategoriesPage() {
       <Seo title="Categories" description="Manage top-level categories and Accessories sub-categories." />
 
       <PageHeader
-        title={<span className="font-heading text-2xl md:text-3xl font-extrabold tracking-tight text-ink">Categories</span>}
+        title={<span>Categories</span>}
         description="Mobile, Laptop, DSLR, and Accessories are fixed. Accessories can have customizable sub-categories."
         actions={
           categories.length === 0 && (
@@ -159,16 +159,16 @@ export default function CategoriesPage() {
                       className="w-10 h-10 rounded-xl object-contain bg-panel p-1.5 border border-line shrink-0"
                     />
                   ) : (
-                    <div className="w-10 h-10 rounded-xl bg-accentLight flex items-center justify-center text-accentDark font-display text-base font-bold border border-accent/20 shrink-0">
+                    <div className="w-10 h-10 rounded-xl bg-accentLight flex items-center justify-center text-accentDark font-display text-base font-semibold border border-accent/20 shrink-0">
                       {cat.name[0]}
                     </div>
                   )}
 
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                      <p className="font-heading font-extrabold text-base text-ink tracking-tight">{cat.name}</p>
+                      <p className="font-heading font-semibold text-base text-ink tracking-tight">{cat.name}</p>
                       {hasSub && (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-panel text-[11px] font-mono font-medium text-muted border border-line">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-panel text-xs font-mono font-medium text-muted border border-line">
                           <Layers size={11} /> {cat.subCategories.length}
                         </span>
                       )}
@@ -317,10 +317,10 @@ function CategoryEditModal({ category, onClose, onSaved }) {
       onClose={onClose}
       title={
         <div className="flex items-center gap-2">
-          <span className="font-heading font-extrabold text-lg text-ink">
+          <span>
             Edit Category:
           </span>
-          <span className="font-heading font-extrabold text-lg text-accentDark bg-accentLight/60 px-2.5 py-0.5 rounded-lg border border-accent/20">
+          <span className="font-heading font-semibold text-lg text-accentDark bg-accentLight/60 px-2.5 py-0.5 rounded-lg border border-accent/20">
             {category.name}
           </span>
         </div>
@@ -349,7 +349,7 @@ function CategoryEditModal({ category, onClose, onSaved }) {
       <form id="category-edit-form" onSubmit={handleSubmit} className="space-y-5 font-body">
         {/* Visual Assets Section */}
         <div className="space-y-4">
-          <p className="text-xs font-mono font-bold tracking-wider text-muted uppercase">
+          <p className="text-sm font-medium text-muted">
             Visual Assets
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -372,20 +372,20 @@ function CategoryEditModal({ category, onClose, onSaved }) {
 
         {/* Sorting Section */}
         <div className="space-y-4">
-          <p className="text-xs font-mono font-bold tracking-wider text-muted uppercase">
+          <p className="text-sm font-medium text-muted">
             Sorting & Priority
           </p>
 
           {/* Display Order Interactive Stepper */}
           <div className="p-3.5 rounded-xl bg-panel/60 border border-line flex items-center justify-between gap-4">
             <div>
-              <p className="text-sm font-bold text-ink">Display Priority Order</p>
+              <p className="text-sm font-semibold text-ink">Display Priority Order</p>
               <p className="text-xs text-muted">Lower values appear first on the storefront header.</p>
             </div>
             <div className="flex items-center gap-1.5 bg-white border border-line rounded-lg p-1 shadow-2xs">
               <button
                 type="button"
-                className="w-7 h-7 rounded-md border border-line bg-panel hover:bg-gray-100 flex items-center justify-center font-bold text-ink text-sm transition-colors cursor-pointer select-none"
+                className="w-7 h-7 rounded-md border border-line bg-panel hover:bg-gray-100 flex items-center justify-center font-semibold text-ink text-sm transition-colors cursor-pointer select-none"
                 onClick={() => setForm((f) => ({ ...f, displayOrder: Math.max(0, f.displayOrder - 1) }))}
               >
                 -
@@ -393,13 +393,13 @@ function CategoryEditModal({ category, onClose, onSaved }) {
               <Input
                 type="number"
                 min="0"
-                className="w-14 text-center font-mono font-bold text-sm border-none shadow-none focus:ring-0 p-0"
+                className="w-14 text-center font-mono font-semibold text-sm border-none shadow-none focus:ring-0 p-0"
                 value={form.displayOrder}
                 onChange={(e) => setForm((f) => ({ ...f, displayOrder: Math.max(0, Number(e.target.value)) }))}
               />
               <button
                 type="button"
-                className="w-7 h-7 rounded-md border border-line bg-panel hover:bg-gray-100 flex items-center justify-center font-bold text-ink text-sm transition-colors cursor-pointer select-none"
+                className="w-7 h-7 rounded-md border border-line bg-panel hover:bg-gray-100 flex items-center justify-center font-semibold text-ink text-sm transition-colors cursor-pointer select-none"
                 onClick={() => setForm((f) => ({ ...f, displayOrder: f.displayOrder + 1 }))}
               >
                 +
@@ -454,7 +454,7 @@ function SubCategoryModal({ categoryId, subCategory, onClose, onSaved }) {
       open
       onClose={onClose}
       title={
-        <span className="font-heading font-extrabold text-lg text-ink">
+        <span>
           {isEdit ? "Edit Sub-category" : "Create New Sub-category"}
         </span>
       }

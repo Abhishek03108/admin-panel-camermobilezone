@@ -154,7 +154,7 @@ export default function OrderDetailPage() {
       <div className="flex items-center justify-between">
         <Link
           to="/orders"
-          className="inline-flex items-center gap-2 text-xs font-bold text-gray-500 hover:text-[#F97316] transition-colors"
+          className="inline-flex items-center gap-2 text-xs font-semibold text-gray-500 hover:text-[#F97316] transition-colors"
         >
           <ArrowLeft size={16} /> Back to Customer Orders
         </Link>
@@ -164,13 +164,13 @@ export default function OrderDetailPage() {
       <div className="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs flex flex-wrap items-center justify-between gap-4">
         <div>
           <div className="flex flex-wrap items-center gap-2.5">
-            <h1 className="text-xl font-extrabold text-gray-900 font-heading tracking-tight">
+            <h1 className="text-[28px] leading-[34px] font-semibold tracking-[-0.025em] text-ink">
               {order.publicId}
             </h1>
             <Badge tone={STATUS_TONE[order.status] || "neutral"}>{order.status}</Badge>
             <Badge tone={PAYMENT_TONE[order.paymentStatus]}>Payment {order.paymentStatus}</Badge>
           </div>
-          <p className="text-xs font-medium text-gray-400 flex items-center gap-1.5 mt-1">
+          <p className="text-sm text-muted flex items-center gap-1.5 mt-1.5">
             <Clock size={13} /> Placed on {formatDateTime(order.createdAt)}
           </p>
         </div>
@@ -180,13 +180,13 @@ export default function OrderDetailPage() {
             href={`${import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api/v1"}/admin/orders/${order.id}/invoice`}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 rounded-xl transition-all shadow-xs"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 rounded-xl transition-all shadow-xs"
           >
             <Download size={14} /> Download Invoice
           </a>
           {order.status !== "Cancelled" && order.status !== "Delivered" && (
             <button
-              className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-white bg-[#F97316] hover:bg-[#EA6A0A] rounded-xl transition-all shadow-xs cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold text-white bg-[#F97316] hover:bg-[#EA6A0A] rounded-xl transition-all shadow-xs cursor-pointer"
               onClick={() => setStatusModal(true)}
             >
               Update Status
@@ -201,7 +201,7 @@ export default function OrderDetailPage() {
         <div className="lg:col-span-2 space-y-6">
           {/* Purchased Items Card */}
           <motion.div variants={cardVariants} className="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs">
-            <h3 className="text-sm font-bold text-gray-900 font-heading mb-4 flex items-center gap-2 pb-3 border-b border-gray-100">
+            <h3 className="text-sm font-semibold text-gray-900 font-heading mb-4 flex items-center gap-2 pb-3 border-b border-gray-100">
               <Package size={17} className="text-[#F97316]" /> Purchased Items ({order.items?.length || 0})
             </h3>
             
@@ -220,12 +220,12 @@ export default function OrderDetailPage() {
                     </div>
                   )}
                   <div className="flex-1 min-w-0">
-                    <p className="text-xs font-bold text-gray-900 line-clamp-1">{item.productName}</p>
-                    <p className="text-[11px] font-semibold text-gray-400 mt-0.5">
+                    <p className="text-xs font-semibold text-gray-900 line-clamp-1">{item.productName}</p>
+                    <p className="text-xs font-semibold text-gray-400 mt-0.5">
                       {formatNepaliCurrency(item.unitPrice)} &times; {item.quantity}
                     </p>
                   </div>
-                  <p className="text-xs font-extrabold text-gray-900 font-heading">
+                  <p className="text-xs font-semibold text-gray-900 font-heading">
                     {formatNepaliCurrency(item.lineTotal)}
                   </p>
                 </div>
@@ -236,19 +236,19 @@ export default function OrderDetailPage() {
             <div className="border-t border-gray-100 mt-4 pt-4 space-y-2 text-xs">
               <div className="flex justify-between text-gray-500 font-medium">
                 <span>Subtotal</span>
-                <span className="font-bold text-gray-700">{formatNepaliCurrency(order.subtotalAmount)}</span>
+                <span className="font-semibold text-gray-700">{formatNepaliCurrency(order.subtotalAmount)}</span>
               </div>
               <div className="flex justify-between text-gray-500 font-medium">
                 <span>Discount</span>
-                <span className="font-bold text-emerald-600">-{formatNepaliCurrency(order.discountAmount)}</span>
+                <span className="font-semibold text-emerald-600">-{formatNepaliCurrency(order.discountAmount)}</span>
               </div>
               <div className="flex justify-between text-gray-500 font-medium">
                 <span>Delivery Charge</span>
-                <span className="font-bold text-gray-700">
+                <span className="font-semibold text-gray-700">
                   {Number(order.deliveryCharge) === 0 ? "Free" : formatNepaliCurrency(order.deliveryCharge)}
                 </span>
               </div>
-              <div className="flex justify-between text-sm font-extrabold text-gray-900 pt-2 border-t border-gray-100 font-heading">
+              <div className="flex justify-between text-sm font-semibold text-gray-900 pt-2 border-t border-gray-100 font-heading">
                 <span>Total Amount</span>
                 <span className="text-[#F97316]">{formatNepaliCurrency(order.totalAmount)}</span>
               </div>
@@ -257,7 +257,7 @@ export default function OrderDetailPage() {
 
           {/* Payment Card */}
           <motion.div variants={cardVariants} className="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs">
-            <h3 className="text-sm font-bold text-gray-900 font-heading mb-4 flex items-center gap-2 pb-3 border-b border-gray-100">
+            <h3 className="text-sm font-semibold text-gray-900 font-heading mb-4 flex items-center gap-2 pb-3 border-b border-gray-100">
               <Wallet size={17} className="text-[#F97316]" /> Payment Information
             </h3>
             
@@ -277,12 +277,12 @@ export default function OrderDetailPage() {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
                         <Badge tone={PAYMENT_TONE[p.status]}>{p.status}</Badge>
-                        <span className="text-[11px] font-medium text-gray-400">{formatDateTime(p.submittedAt)}</span>
+                        <span className="text-xs font-medium text-gray-400">{formatDateTime(p.submittedAt)}</span>
                       </div>
-                      <p className="text-xs font-extrabold text-gray-900 font-heading">
+                      <p className="text-xs font-semibold text-gray-900 font-heading">
                         {formatNepaliCurrency(p.amount)} via Digital Transfer
                       </p>
-                      {p.upiId && <p className="text-[11px] font-semibold text-gray-500">Ref / Phone: {p.upiId}</p>}
+                      {p.upiId && <p className="text-xs font-semibold text-gray-500">Ref / Phone: {p.upiId}</p>}
                       {p.rejectionReason && (
                         <p className="text-xs font-semibold text-red-600 bg-red-50 p-2 rounded-lg mt-2">
                           Rejected Reason: {p.rejectionReason}
@@ -292,7 +292,7 @@ export default function OrderDetailPage() {
                       {p.status === "Pending" && (
                         <div className="flex items-center gap-2 mt-3">
                           <button
-                            className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl transition-all shadow-xs cursor-pointer"
+                            className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-semibold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl transition-all shadow-xs cursor-pointer"
                             disabled={processingPayment}
                             onClick={() => handleVerifyPayment(p.id, "Verified")}
                           >
@@ -300,7 +300,7 @@ export default function OrderDetailPage() {
                             {processingPayment ? "Verifying..." : "Approve Payment"}
                           </button>
                           <button
-                            className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 rounded-xl transition-all border border-red-200 cursor-pointer"
+                            className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-semibold text-red-600 bg-red-50 hover:bg-red-100 rounded-xl transition-all border border-red-200 cursor-pointer"
                             onClick={() => setRejectModal(p)}
                           >
                             <XCircle size={13} /> Reject
@@ -312,7 +312,7 @@ export default function OrderDetailPage() {
                         href={p.screenshotUrl}
                         target="_blank"
                         rel="noreferrer"
-                        className="inline-flex items-center gap-1 text-[11px] font-bold text-[#F97316] mt-2 hover:underline"
+                        className="inline-flex items-center gap-1 text-xs font-semibold text-[#F97316] mt-2 hover:underline"
                       >
                         View Full Screenshot <ExternalLink size={11} />
                       </a>
@@ -326,10 +326,10 @@ export default function OrderDetailPage() {
           {/* Audit Trail & History Feed */}
           <motion.div variants={cardVariants} className="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs">
             <div className="flex items-center justify-between pb-4 border-b border-gray-100 mb-5">
-              <h3 className="text-sm font-bold text-gray-900 font-heading flex items-center gap-2">
+              <h3 className="text-sm font-semibold text-gray-900 font-heading flex items-center gap-2">
                 <Clock size={17} className="text-[#F97316]" /> Activity Audit Trail
               </h3>
-              <span className="text-[11px] font-bold text-gray-400 bg-gray-50 px-2.5 py-1 rounded-full border border-gray-100">
+              <span className="text-xs font-semibold text-gray-400 bg-gray-50 px-2.5 py-1 rounded-full border border-gray-100">
                 {order.statusHistory?.length || 0} Events Logged
               </span>
             </div>
@@ -347,10 +347,10 @@ export default function OrderDetailPage() {
 
                   <div className="flex-1 min-w-0 bg-gray-50/70 hover:bg-gray-50 border border-gray-100 rounded-2xl p-3.5 transition-all">
                     <div className="flex flex-wrap items-center justify-between gap-1 mb-1">
-                      <span className="text-xs font-bold text-gray-900 font-heading">
+                      <span className="text-xs font-semibold text-gray-900 font-heading">
                         {h.status}
                       </span>
-                      <span className="text-[10px] font-semibold text-gray-400 bg-white px-2 py-0.5 rounded-md border border-gray-100">
+                      <span className="text-xs font-semibold text-gray-400 bg-white px-2 py-0.5 rounded-md border border-gray-100">
                         {formatDateTime(h.createdAt)}
                       </span>
                     </div>
@@ -360,7 +360,7 @@ export default function OrderDetailPage() {
                         "{h.note}"
                       </p>
                     ) : (
-                      <p className="text-[11px] text-gray-400 font-medium">System status transition performed.</p>
+                      <p className="text-xs text-gray-400 font-medium">System status transition performed.</p>
                     )}
                   </div>
                 </motion.div>
@@ -373,11 +373,11 @@ export default function OrderDetailPage() {
         <div className="space-y-6">
           {/* Shipping Address */}
           <motion.div variants={cardVariants} className="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs">
-            <h3 className="text-sm font-bold text-gray-900 font-heading mb-3 flex items-center gap-2 pb-3 border-b border-gray-100">
+            <h3 className="text-sm font-semibold text-gray-900 font-heading mb-3 flex items-center gap-2 pb-3 border-b border-gray-100">
               <MapPin size={17} className="text-[#F97316]" /> Shipping Address
             </h3>
             <div className="space-y-2 text-xs">
-              <p className="font-bold text-gray-900 flex items-center gap-1.5 text-sm">
+              <p className="font-semibold text-gray-900 flex items-center gap-1.5 text-sm">
                 <User size={14} className="text-gray-400" /> {order.shippingFullName}
               </p>
               <p className="font-semibold text-gray-500 flex items-center gap-1.5">
@@ -394,11 +394,11 @@ export default function OrderDetailPage() {
           {/* Delivery Details */}
           <motion.div variants={cardVariants} className="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs">
             <div className="flex items-center justify-between mb-3 pb-3 border-b border-gray-100">
-              <h3 className="text-sm font-bold text-gray-900 font-heading flex items-center gap-2">
+              <h3 className="text-sm font-semibold text-gray-900 font-heading flex items-center gap-2">
                 <Truck size={17} className="text-[#F97316]" /> Courier & Delivery
               </h3>
               <button
-                className="text-xs font-bold text-[#F97316] hover:underline cursor-pointer"
+                className="text-xs font-semibold text-[#F97316] hover:underline cursor-pointer"
                 onClick={() => setDeliveryModal(true)}
               >
                 Edit
@@ -409,15 +409,15 @@ export default function OrderDetailPage() {
               <div className="text-xs space-y-2 font-medium">
                 <div className="flex justify-between py-1 border-b border-gray-50">
                   <span className="text-gray-400">Status</span>
-                  <span className="font-bold text-gray-800">{order.delivery.status}</span>
+                  <span className="font-semibold text-gray-800">{order.delivery.status}</span>
                 </div>
                 <div className="flex justify-between py-1 border-b border-gray-50">
                   <span className="text-gray-400">Courier Name</span>
-                  <span className="font-bold text-gray-800">{order.delivery.courierName || "—"}</span>
+                  <span className="font-semibold text-gray-800">{order.delivery.courierName || "—"}</span>
                 </div>
                 <div className="flex justify-between py-1">
                   <span className="text-gray-400">Tracking Number</span>
-                  <span className="font-bold text-gray-800 font-mono">{order.delivery.trackingNumber || "—"}</span>
+                  <span className="font-semibold text-gray-800 font-mono">{order.delivery.trackingNumber || "—"}</span>
                 </div>
               </div>
             ) : (
@@ -496,13 +496,13 @@ function StatusUpdateModal({ order, onClose, onDone }) {
       footer={
         <div className="flex items-center justify-end gap-2.5 w-full pt-2">
           <button
-            className="px-4 py-2.5 text-xs font-bold text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-xl transition-all cursor-pointer"
+            className="px-4 py-2.5 text-xs font-semibold text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-xl transition-all cursor-pointer"
             onClick={onClose}
           >
             Cancel
           </button>
           <button
-            className="inline-flex items-center gap-1.5 px-5 py-2.5 text-xs font-bold text-white bg-[#F97316] hover:bg-[#EA6A0A] rounded-xl transition-all shadow-xs disabled:opacity-50 cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-5 py-2.5 text-xs font-semibold text-white bg-[#F97316] hover:bg-[#EA6A0A] rounded-xl transition-all shadow-xs disabled:opacity-50 cursor-pointer"
             onClick={handleSubmit}
             disabled={isSaving}
           >
@@ -516,15 +516,15 @@ function StatusUpdateModal({ order, onClose, onDone }) {
         {/* Visual Flow Header */}
         <div className="bg-gray-50 border border-gray-100 rounded-2xl p-3.5 flex items-center justify-between text-xs font-semibold">
           <div className="space-y-0.5">
-            <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Current Status</span>
-            <p className="text-gray-800 font-bold">{order.status}</p>
+            <span className="text-sm text-gray-400 font-medium">Current Status</span>
+            <p className="text-gray-800 font-semibold">{order.status}</p>
           </div>
-          <div className="w-7 h-7 rounded-full bg-orange-100 text-[#F97316] flex items-center justify-center font-bold shrink-0">
+          <div className="w-7 h-7 rounded-full bg-orange-100 text-[#F97316] flex items-center justify-center font-semibold shrink-0">
             <ArrowRight size={14} />
           </div>
           <div className="space-y-0.5 text-right">
-            <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Next Step</span>
-            <p className="text-[#F97316] font-bold">{status || "Select below"}</p>
+            <span className="text-sm text-gray-400 font-medium">Next Step</span>
+            <p className="text-[#F97316] font-semibold">{status || "Select below"}</p>
           </div>
         </div>
 
@@ -532,7 +532,7 @@ function StatusUpdateModal({ order, onClose, onDone }) {
           <Select
             value={status}
             onChange={(e) => setStatus(e.target.value)}
-            className="w-full text-xs font-bold text-gray-900 bg-white border border-gray-200 rounded-xl p-2.5 focus:border-[#F97316] focus:ring-2 focus:ring-orange-100 transition-all outline-none"
+            className="w-full text-xs font-semibold text-gray-900 bg-white border border-gray-200 rounded-xl p-2.5 focus:border-[#F97316] focus:ring-2 focus:ring-orange-100 transition-all outline-none"
           >
             <option value="" className="text-gray-500 bg-white">
               Select Next Fulfillment Stage
@@ -549,7 +549,7 @@ function StatusUpdateModal({ order, onClose, onDone }) {
           <div className="flex items-start gap-2.5 text-xs font-medium text-red-700 bg-red-50/80 rounded-2xl p-3.5 border border-red-200/60">
             <AlertTriangle size={17} className="shrink-0 mt-0.5 text-red-500" />
             <p className="leading-relaxed">
-              <strong className="font-bold">Payment Unverified:</strong> Order payment must be approved before advancing fulfillment stages.
+              <strong className="font-semibold">Payment Unverified:</strong> Order payment must be approved before advancing fulfillment stages.
             </p>
           </div>
         )}
@@ -584,13 +584,13 @@ function RejectReasonModal({ payment, onClose, onConfirm }) {
       footer={
         <div className="flex items-center justify-end gap-2.5 w-full pt-2">
           <button
-            className="px-4 py-2.5 text-xs font-bold text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-xl transition-all cursor-pointer"
+            className="px-4 py-2.5 text-xs font-semibold text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-xl transition-all cursor-pointer"
             onClick={onClose}
           >
             Cancel
           </button>
           <button
-            className="inline-flex items-center gap-1.5 px-5 py-2.5 text-xs font-bold text-white bg-red-600 hover:bg-red-700 rounded-xl transition-all shadow-xs cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-5 py-2.5 text-xs font-semibold text-white bg-red-600 hover:bg-red-700 rounded-xl transition-all shadow-xs cursor-pointer"
             onClick={() => {
               onConfirm(payment.id, "Rejected", reason || "Screenshot unclear or invalid.");
               onClose();
@@ -603,26 +603,26 @@ function RejectReasonModal({ payment, onClose, onConfirm }) {
     >
       <div className="space-y-4 pt-1">
         <div className="bg-red-50/70 border border-red-100 rounded-2xl p-3.5 flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-red-100 text-red-600 flex items-center justify-center shrink-0 font-bold">
+          <div className="w-9 h-9 rounded-xl bg-red-100 text-red-600 flex items-center justify-center shrink-0 font-semibold">
             <XCircle size={20} />
           </div>
           <div className="text-xs">
-            <p className="font-bold text-red-900">Payment Verification Action</p>
-            <p className="text-red-600 font-medium text-[11px] mt-0.5">
+            <p className="font-semibold text-red-900">Payment Verification Action</p>
+            <p className="text-red-600 font-medium text-xs mt-0.5">
               The customer will receive an email notice with the reason provided below.
             </p>
           </div>
         </div>
 
         <div>
-          <label className="block text-xs font-bold text-gray-700 mb-2">Quick Presets</label>
+          <label className="block text-xs font-semibold text-gray-700 mb-2">Quick Presets</label>
           <div className="flex flex-wrap gap-1.5">
             {PRESETS.map((preset) => (
               <button
                 key={preset}
                 type="button"
                 onClick={() => setReason(preset)}
-                className="text-[11px] font-semibold px-2.5 py-1 rounded-lg bg-gray-100 hover:bg-orange-50 hover:text-[#F97316] text-gray-600 transition-colors border border-gray-200/60 cursor-pointer"
+                className="text-xs font-semibold px-2.5 py-1 rounded-lg bg-gray-100 hover:bg-orange-50 hover:text-[#F97316] text-gray-600 transition-colors border border-gray-200/60 cursor-pointer"
               >
                 + {preset}
               </button>
@@ -674,13 +674,13 @@ function DeliveryEditModal({ order, onClose, onDone }) {
       footer={
         <div className="flex items-center justify-end gap-2.5 w-full pt-2">
           <button
-            className="px-4 py-2.5 text-xs font-bold text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-xl transition-all cursor-pointer"
+            className="px-4 py-2.5 text-xs font-semibold text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-xl transition-all cursor-pointer"
             onClick={onClose}
           >
             Cancel
           </button>
           <button
-            className="inline-flex items-center gap-1.5 px-5 py-2.5 text-xs font-bold text-white bg-[#F97316] hover:bg-[#EA6A0A] rounded-xl transition-all shadow-xs disabled:opacity-50 cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-5 py-2.5 text-xs font-semibold text-white bg-[#F97316] hover:bg-[#EA6A0A] rounded-xl transition-all shadow-xs disabled:opacity-50 cursor-pointer"
             onClick={handleSave}
             disabled={isSaving}
           >

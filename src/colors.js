@@ -6,8 +6,8 @@
  */
 export const APP_COLORS = {
   background: "#FFFFFF",
-  ink: "#111111",
-  muted: "#6B7280",
+  ink: "#3D3D3D",
+  muted: "#666666",
   border: "#E5E7EB",
   panel: "#F8F9FA",
 

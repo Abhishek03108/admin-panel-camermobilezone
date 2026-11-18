@@ -97,7 +97,7 @@ export default function BrandsPage() {
       <Seo title="Brands" description="Manage product brands." />
 
       <PageHeader
-        title={<span className="font-heading text-2xl md:text-3xl font-extrabold tracking-tight text-ink">Brands</span>}
+        title={<span>Brands</span>}
         description="Every product in the catalog is mapped to a primary brand."
         actions={
           <button
@@ -113,8 +113,8 @@ export default function BrandsPage() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="bg-white rounded-2xl border border-line p-4 flex items-center justify-between shadow-2xs">
           <div>
-            <p className="text-xs font-semibold text-muted uppercase tracking-wider">Total Brands</p>
-            <p className="font-heading text-2xl font-extrabold text-ink mt-0.5">{stats.total}</p>
+            <p className="text-sm font-medium text-muted">Total Brands</p>
+            <p className="font-heading text-2xl font-semibold text-ink mt-0.5">{stats.total}</p>
           </div>
           <div className="w-10 h-10 rounded-xl bg-panel flex items-center justify-center text-muted border border-line">
             <Building2 size={20} />
@@ -123,8 +123,8 @@ export default function BrandsPage() {
 
         <div className="bg-white rounded-2xl border border-line p-4 flex items-center justify-between shadow-2xs">
           <div>
-            <p className="text-xs font-semibold text-muted uppercase tracking-wider">Active</p>
-            <p className="font-heading text-2xl font-extrabold text-verify mt-0.5">{stats.active}</p>
+            <p className="text-sm font-medium text-muted">Active</p>
+            <p className="font-heading text-2xl font-semibold text-verify mt-0.5">{stats.active}</p>
           </div>
           <div className="w-10 h-10 rounded-xl bg-verifyLight flex items-center justify-center text-verify border border-verify/20">
             <CheckCircle2 size={20} />
@@ -133,8 +133,8 @@ export default function BrandsPage() {
 
         <div className="bg-white rounded-2xl border border-line p-4 flex items-center justify-between shadow-2xs">
           <div>
-            <p className="text-xs font-semibold text-muted uppercase tracking-wider">Inactive</p>
-            <p className="font-heading text-2xl font-extrabold text-muted mt-0.5">{stats.inactive}</p>
+            <p className="text-sm font-medium text-muted">Inactive</p>
+            <p className="font-heading text-2xl font-semibold text-muted mt-0.5">{stats.inactive}</p>
           </div>
           <div className="w-10 h-10 rounded-xl bg-panel flex items-center justify-center text-muted border border-line">
             <XCircle size={20} />
@@ -202,7 +202,7 @@ export default function BrandsPage() {
                       className="w-10 h-10 rounded-xl object-contain bg-panel p-1.5 border border-line shadow-2xs"
                     />
                   ) : (
-                    <div className="w-10 h-10 rounded-xl bg-accentLight flex items-center justify-center text-accentDark font-display text-base font-bold border border-accent/20 shadow-2xs">
+                    <div className="w-10 h-10 rounded-xl bg-accentLight flex items-center justify-center text-accentDark font-display text-base font-semibold border border-accent/20 shadow-2xs">
                       {b.logoInitial || b.name[0]}
                     </div>
                   )}
@@ -330,7 +330,7 @@ function BrandModal({ brand, onClose, onSaved }) {
       open
       onClose={onClose}
       title={
-        <span className="font-heading font-extrabold text-lg text-ink flex items-center gap-2">
+        <span className="flex items-center gap-2">
           <Sparkles size={18} className="text-accent" />
           {isEdit ? `Edit Brand: ${brand.name}` : "Create New Brand"}
         </span>
@@ -366,13 +366,13 @@ function BrandModal({ brand, onClose, onSaved }) {
               className="w-12 h-12 rounded-xl object-contain bg-white p-1 border border-line shadow-2xs"
             />
           ) : (
-            <div className="w-12 h-12 rounded-xl bg-accentLight flex items-center justify-center text-accentDark font-display text-lg font-bold border border-accent/20 shadow-2xs uppercase">
+            <div className="w-12 h-12 rounded-xl bg-accentLight flex items-center justify-center text-accentDark font-display text-lg font-semibold border border-accent/20 shadow-2xs uppercase">
               {previewInitial}
             </div>
           )}
           <div>
-            <p className="text-xs font-semibold text-muted uppercase tracking-wider">Live Preview</p>
-            <p className="text-sm font-heading font-extrabold text-ink">
+            <p className="text-sm font-medium text-muted">Live Preview</p>
+            <p className="text-sm font-heading font-semibold text-ink">
               {form.name.trim() || "Brand Name"}
             </p>
           </div>

@@ -67,7 +67,7 @@ export default function QrLogin() {
       <Seo title="Log in with your phone" description="Scan a QR code to log in." />
       <div className="w-full max-w-md">
         <div className="flex flex-col items-center mb-8">
-          <div className="w-12 h-12 rounded-xl bg-accent flex items-center justify-center text-white font-bold text-lg mb-3">
+          <div className="w-12 h-12 rounded-xl bg-accent flex items-center justify-center text-white font-semibold text-lg mb-3">
             C
           </div>
           <h1 className="text-lg font-semibold text-ink">Camera Mobile Zone</h1>

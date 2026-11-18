@@ -68,17 +68,17 @@ export default function SettingsPage() {
     >
       <Seo title="Settings" description="Manage your admin account settings." />
       <PageHeader
-        title={<span className="font-heading text-2xl md:text-3xl font-extrabold tracking-tight text-ink">Account Settings</span>}
+        title={<span>Account Settings</span>}
         description="Manage your security credentials, personal identity overview, and two-factor authentication."
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Profile Details Card */}
         <div className="bg-white rounded-2xl border border-line shadow-2xs p-6 text-center flex flex-col items-center justify-center">
-          <div className="w-20 h-20 rounded-2xl bg-accent/10 text-accent font-heading font-extrabold flex items-center justify-center text-2xl border border-accent/20 mb-4 shadow-2xs">
+          <div className="w-20 h-20 rounded-2xl bg-accent/10 text-accent font-heading font-semibold flex items-center justify-center text-2xl border border-accent/20 mb-4 shadow-2xs">
             {initials(admin?.fullName)}
           </div>
-          <h2 className="text-lg font-bold font-heading text-ink">{admin?.fullName}</h2>
+          <h2 className="text-lg font-semibold font-heading text-ink">{admin?.fullName}</h2>
           <p className="text-xs font-mono text-muted mt-1">{admin?.email}</p>
 
           <div className="w-full border-t border-line mt-5 pt-4 space-y-2 text-left">
@@ -99,7 +99,7 @@ export default function SettingsPage() {
         <div className="lg:col-span-2 bg-white rounded-2xl border border-line shadow-2xs p-6">
           <div className="flex items-center gap-2 mb-1">
             <KeyRound size={18} className="text-accent" />
-            <h3 className="text-base font-bold font-heading text-ink">Change Password</h3>
+            <h3 className="text-base font-semibold font-heading text-ink">Change Password</h3>
           </div>
           <p className="text-xs text-muted font-body mb-6">
             Updating your password will automatically end active sessions on all other devices.
@@ -232,7 +232,7 @@ function TwoFactorCard() {
     <div className="bg-white rounded-2xl border border-line shadow-2xs p-6">
       <div className="flex items-center gap-2 mb-1">
         <ShieldCheck size={18} className="text-accent" />
-        <h3 className="text-base font-bold font-heading text-ink">Two-Factor Authentication (2FA)</h3>
+        <h3 className="text-base font-semibold font-heading text-ink">Two-Factor Authentication (2FA)</h3>
       </div>
       <p className="text-xs text-muted font-body mb-5">
         Enhance account security. When active, logging in requires entering a verification code sent to your email.

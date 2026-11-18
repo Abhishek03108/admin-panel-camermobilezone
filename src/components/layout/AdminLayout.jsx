@@ -11,7 +11,7 @@ export default function AdminLayout() {
       <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
       <div className="flex-1 min-w-0 flex flex-col">
         <Topbar onMenuClick={() => setSidebarOpen(true)} />
-        <main className="flex-1 p-4 sm:p-6 max-w-[1400px] w-full mx-auto">
+        <main className="flex-1 px-4 py-6 sm:px-8 sm:py-8 lg:px-10 lg:py-10 max-w-[1400px] w-full mx-auto">
           <Outlet />
         </main>
       </div>

@@ -104,7 +104,7 @@ export default function UsersListPage() {
       <Seo title="Users" description="Manage customer accounts." />
 
       <PageHeader 
-        title={<span className="font-heading text-2xl md:text-3xl font-extrabold tracking-tight text-ink">Users</span>} 
+        title={<span>Users</span>} 
         description="Customer accounts registered on the storefront." 
       />
 
@@ -122,7 +122,7 @@ export default function UsersListPage() {
           <div className="flex items-center gap-3 text-sm">
             <MailPlus size={20} className="text-accent shrink-0" />
             <span>
-              <span className="font-bold text-ink">{welcome.pending}</span>{" "}
+              <span className="font-semibold text-ink">{welcome.pending}</span>{" "}
               <span className="text-ink">{welcome.pending === 1 ? "customer hasn't" : "customers haven't"} received a welcome email yet.</span>
             </span>
           </div>
@@ -151,7 +151,7 @@ export default function UsersListPage() {
 
           {meta?.total > 0 && (
             <div className="text-sm font-mono font-semibold text-muted self-end sm:self-center">
-              Total Customers: <span className="text-ink font-bold">{meta.total}</span>
+              Total Customers: <span className="text-ink font-semibold">{meta.total}</span>
             </div>
           )}
         </div>
@@ -167,11 +167,11 @@ export default function UsersListPage() {
               header: "User",
               render: (u) => (
                 <div className="flex items-center gap-3.5 py-1">
-                  <div className="w-10 h-10 rounded-xl bg-accent/10 text-accent font-heading font-extrabold flex items-center justify-center text-sm shrink-0 border border-accent/20">
+                  <div className="w-10 h-10 rounded-xl bg-accent/10 text-accent font-heading font-semibold flex items-center justify-center text-sm shrink-0 border border-accent/20">
                     {initials(u.fullName || "User")}
                   </div>
                   <div className="min-w-0">
-                    <p className="text-base font-bold text-ink font-heading truncate">{u.fullName || "N/A"}</p>
+                    <p className="text-base font-semibold text-ink font-heading truncate">{u.fullName || "N/A"}</p>
                     <p className="text-xs font-mono text-muted mt-0.5 truncate">{u.publicId || u.id}</p>
                   </div>
                 </div>

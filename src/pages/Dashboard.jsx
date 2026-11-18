@@ -185,7 +185,7 @@ export default function Dashboard() {
             } shadow-xs transition-all duration-200 flex flex-col justify-between`}
           >
             <div className="flex items-center justify-between gap-3 mb-3">
-              <span className="text-xs font-bold text-gray-500 uppercase tracking-wider font-heading">
+              <span className="text-sm font-medium text-gray-500">
                 {stat.label}
               </span>
               <motion.div
@@ -197,7 +197,7 @@ export default function Dashboard() {
             </div>
 
             <div className="mt-1">
-              <p className="text-2xl font-extrabold text-gray-900 font-heading tracking-tight">
+              <p className="text-2xl font-semibold text-gray-900 font-heading tracking-tight">
                 {stat.value}
               </p>
               <p className="text-xs font-medium text-gray-400 mt-1 flex items-center gap-1">
@@ -217,7 +217,7 @@ export default function Dashboard() {
         >
           <div className="flex items-center justify-between pb-4 border-b border-gray-100 mb-5">
             <div>
-              <h3 className="text-base font-bold text-gray-900 font-heading">
+              <h3 className="text-base font-semibold text-gray-900 font-heading">
                 Orders by Status
               </h3>
               <p className="text-xs font-medium text-gray-400 mt-0.5">
@@ -226,7 +226,7 @@ export default function Dashboard() {
             </div>
             <Link
               to="/orders"
-              className="text-xs font-bold text-[#F97316] hover:text-[#EA6A0A] inline-flex items-center gap-1 hover:underline transition-all"
+              className="text-xs font-semibold text-[#F97316] hover:text-[#EA6A0A] inline-flex items-center gap-1 hover:underline transition-all"
             >
               View All Orders <ArrowUpRight size={14} />
             </Link>
@@ -250,7 +250,7 @@ export default function Dashboard() {
                     </Badge>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-sm font-bold text-gray-900 font-heading">
+                    <span className="text-sm font-semibold text-gray-900 font-heading">
                       {row.count}
                     </span>
                     <span className="text-xs font-medium text-gray-400">orders</span>
@@ -268,7 +268,7 @@ export default function Dashboard() {
         >
           <div className="flex items-center justify-between pb-4 border-b border-gray-100 mb-5">
             <div>
-              <h3 className="text-base font-bold text-gray-900 font-heading flex items-center gap-2">
+              <h3 className="text-base font-semibold text-gray-900 font-heading flex items-center gap-2">
                 <ShieldAlert size={18} className="text-[#F97316]" /> Needs Your Attention
               </h3>
               <p className="text-xs font-medium text-gray-400 mt-0.5">
@@ -289,7 +289,7 @@ export default function Dashboard() {
                     <Clock size={18} />
                   </div>
                   <div>
-                    <p className="text-sm font-bold text-gray-900 group-hover:text-[#EA6A0A] transition-colors">
+                    <p className="text-sm font-semibold text-gray-900 group-hover:text-[#EA6A0A] transition-colors">
                       Payments awaiting verification
                     </p>
                     <p className="text-xs font-medium text-gray-400">
@@ -299,7 +299,7 @@ export default function Dashboard() {
                 </div>
                 <div className="flex items-center gap-2">
                   <span
-                    className={`text-sm font-extrabold px-3 py-1 rounded-lg ${
+                    className={`text-sm font-semibold px-3 py-1 rounded-lg ${
                       data.pendingPaymentVerification > 0
                         ? "bg-[#FFF1E6] text-[#EA6A0A]"
                         : "bg-gray-100 text-gray-600"
@@ -323,7 +323,7 @@ export default function Dashboard() {
                     <MessageSquare size={18} />
                   </div>
                   <div>
-                    <p className="text-sm font-bold text-gray-900 group-hover:text-[#EA6A0A] transition-colors">
+                    <p className="text-sm font-semibold text-gray-900 group-hover:text-[#EA6A0A] transition-colors">
                       Unresolved contact messages
                     </p>
                     <p className="text-xs font-medium text-gray-400">
@@ -333,7 +333,7 @@ export default function Dashboard() {
                 </div>
                 <div className="flex items-center gap-2">
                   <span
-                    className={`text-sm font-extrabold px-3 py-1 rounded-lg ${
+                    className={`text-sm font-semibold px-3 py-1 rounded-lg ${
                       data.unresolvedContactMessages > 0
                         ? "bg-[#FFF1E6] text-[#EA6A0A]"
                         : "bg-gray-100 text-gray-600"
@@ -357,7 +357,7 @@ export default function Dashboard() {
                     <PackageX size={18} />
                   </div>
                   <div>
-                    <p className="text-sm font-bold text-gray-900 group-hover:text-[#EA6A0A] transition-colors">
+                    <p className="text-sm font-semibold text-gray-900 group-hover:text-[#EA6A0A] transition-colors">
                       Products out of stock
                     </p>
                     <p className="text-xs font-medium text-gray-400">
@@ -367,7 +367,7 @@ export default function Dashboard() {
                 </div>
                 <div className="flex items-center gap-2">
                   <span
-                    className={`text-sm font-extrabold px-3 py-1 rounded-lg ${
+                    className={`text-sm font-semibold px-3 py-1 rounded-lg ${
                       data.outOfStockProducts > 0
                         ? "bg-[#FFF1E6] text-[#EA6A0A]"
                         : "bg-gray-100 text-gray-600"

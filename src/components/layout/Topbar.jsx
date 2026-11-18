@@ -93,7 +93,7 @@ export default function Topbar({ onMenuClick }) {
           type="button"
           onClick={onMenuClick}
           aria-label="Toggle navigation sidebar"
-          className="lg:hidden text-xs font-semibold text-gray-600 hover:text-gray-900 px-3 py-1.5 rounded-lg hover:bg-gray-100 border border-gray-200 active:scale-95 transition-all"
+          className="lg:hidden text-sm font-medium text-ink px-4 py-2 rounded-full hover:bg-gray-100 border border-[#CFCFCF] active:scale-95 transition-all"
         >
           Menu
         </button>
@@ -116,14 +116,11 @@ export default function Topbar({ onMenuClick }) {
 
           {/* Clean Enterprise "ADMIN PANEL" Typography */}
           <div className="hidden sm:flex items-center gap-2">
-            <span className="font-heading font-extrabold text-sm tracking-tight text-gray-900 group-hover:text-[#EA6A0A] transition-colors">
-              ADMIN
+            <span className="text-lg font-semibold tracking-[-0.01em] text-ink group-hover:text-[#EA6A0A] transition-colors">
+              Admin
             </span>
-            <span className="font-heading font-medium text-sm tracking-tight text-gray-300">
-              /
-            </span>
-            <span className="font-heading font-semibold text-xs uppercase tracking-widest text-[#F97316]">
-              PANEL
+            <span className="text-lg font-normal text-gray-400">
+              panel
             </span>
           </div>
         </motion.div>
@@ -147,7 +144,7 @@ export default function Topbar({ onMenuClick }) {
               transition={{ duration: 0.3 }}
               className="w-9 h-9 rounded-xl bg-white border-2 border-[#F97316] text-[#EA6A0A] flex items-center justify-center shadow-xs"
             >
-              <span className="text-sm font-extrabold font-heading">
+              <span className="text-base font-semibold">
                 {userFirstLetter}
               </span>
             </motion.div>
@@ -159,14 +156,14 @@ export default function Topbar({ onMenuClick }) {
           {/* User Details */}
           <div className="hidden sm:block leading-tight">
             <div className="flex items-center gap-2">
-              <p className="text-xs font-bold text-gray-900 font-heading truncate max-w-[120px]">
+              <p className="text-sm font-semibold text-ink truncate max-w-[140px]">
                 {admin?.fullName || "Administrator"}
               </p>
-              <span className="px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#EA6A0A] bg-[#FFF1E6] rounded border border-[#F97316]/20">
+              <span className="px-2 py-0.5 text-xs font-medium text-[#EA6A0A] bg-[#FFF1E6] rounded-full">
                 Admin
               </span>
             </div>
-            <p className="text-[11px] font-medium text-gray-500 truncate max-w-[150px] mt-0.5">
+            <p className="text-xs text-muted truncate max-w-[170px] mt-0.5">
               {admin?.email || "admin@cameramobilezone.com"}
             </p>
           </div>
@@ -193,14 +190,14 @@ export default function Topbar({ onMenuClick }) {
               initial="hidden"
               animate="visible"
               exit="exit"
-              className="absolute right-0 mt-2 w-56 bg-white border border-gray-200 rounded-2xl shadow-xl py-1.5 z-50 overflow-hidden"
+              className="absolute right-0 mt-2 w-60 bg-white border border-gray-200 rounded-xl shadow-popover py-2 z-50 overflow-hidden"
             >
               {/* Mobile Header */}
               <div className="sm:hidden px-3.5 py-2.5 border-b border-gray-100 mb-1 bg-gray-50/50">
-                <p className="text-xs font-bold text-gray-900 truncate">
+                <p className="text-sm font-semibold text-ink truncate">
                   {admin?.fullName || "Administrator"}
                 </p>
-                <p className="text-[11px] text-gray-500 truncate mt-0.5">
+                <p className="text-xs text-gray-500 truncate mt-0.5">
                   {admin?.email}
                 </p>
               </div>
@@ -212,10 +209,10 @@ export default function Topbar({ onMenuClick }) {
                   setOpen(false);
                   navigate("/settings");
                 }}
-                className="w-full text-left px-4 py-2 text-xs font-medium text-gray-700 hover:bg-gray-50 hover:text-[#EA6A0A] transition-colors flex items-center justify-between"
+                className="w-full text-left px-4 py-2.5 text-[15px] text-ink hover:bg-gray-50 hover:text-[#EA6A0A] transition-colors flex items-center justify-between"
               >
                 <span>Account Settings</span>
-                <span className="text-[10px] text-gray-400 font-mono">⌘S</span>
+                <span className="text-xs text-gray-400 font-mono">⌘S</span>
               </motion.button>
 
               <div className="h-px bg-gray-100 my-1" />
@@ -224,10 +221,10 @@ export default function Topbar({ onMenuClick }) {
                 whileHover={{ x: 2 }}
                 type="button"
                 onClick={handleLogout}
-                className="w-full text-left px-4 py-2 text-xs font-medium text-red-600 hover:bg-red-50 transition-colors flex items-center justify-between"
+                className="w-full text-left px-4 py-2.5 text-[15px] text-red-600 hover:bg-red-50 transition-colors flex items-center justify-between"
               >
                 <span>Log Out</span>
-                <span className="text-[10px] text-red-400">➔</span>
+                <span className="text-xs text-red-400">➔</span>
               </motion.button>
             </motion.div>
           )}

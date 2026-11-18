@@ -7,8 +7,8 @@ export function Field({ label, error, hint, required, children }) {
         </label>
       )}
       {children}
-      {hint && !error && <p className="text-xs text-muted mt-1">{hint}</p>}
-      {error && <p className="text-xs text-danger mt-1">{error}</p>}
+      {hint && !error && <p className="text-sm text-muted mt-1.5">{hint}</p>}
+      {error && <p className="text-sm text-danger mt-1.5">{error}</p>}
     </div>
   );
 }
@@ -31,7 +31,7 @@ export function Select({ children, ...props }) {
 
 export function Checkbox({ label, ...props }) {
   return (
-    <label className="flex items-center gap-2 text-sm text-ink cursor-pointer select-none">
+    <label className="flex items-center gap-2.5 text-[15px] text-ink cursor-pointer select-none">
       <input type="checkbox" className="w-4 h-4 rounded border-line text-accent focus:ring-accent/30" {...props} />
       {label}
     </label>
@@ -52,7 +52,7 @@ export function Switch({ checked, onChange, label }) {
           }`}
         />
       </button>
-      {label && <span className="text-sm text-ink">{label}</span>}
+      {label && <span className="text-[15px] text-ink">{label}</span>}
     </label>
   );
 }

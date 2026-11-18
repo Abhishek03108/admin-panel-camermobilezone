@@ -96,7 +96,7 @@ export default function ContactMessagesPage() {
       <Seo title="Contact Messages" description="Customer messages from the contact form." />
 
       <PageHeader
-        title={<span className="font-heading text-2xl md:text-3xl font-extrabold tracking-tight text-ink">Contact Inquiries</span>}
+        title={<span>Contact Inquiries</span>}
         description="Review and respond to customer messages submitted via the storefront Contact Us page."
       />
 
@@ -104,7 +104,7 @@ export default function ContactMessagesPage() {
         {/* Filters Toolbar */}
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 p-5 border-b border-line bg-panel/30">
           <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
-            <div className="flex items-center gap-2 text-xs font-mono font-semibold uppercase tracking-wider text-muted">
+            <div className="flex items-center gap-2 text-sm font-medium text-muted">
               <Filter size={14} className="text-accent" />
               <span>Filters</span>
             </div>
@@ -135,7 +135,7 @@ export default function ContactMessagesPage() {
 
           {meta?.total !== undefined && (
             <div className="text-xs font-mono font-semibold text-muted self-end sm:self-center">
-              Total Inquiries: <span className="text-ink font-bold">{meta.total}</span>
+              Total Inquiries: <span className="text-ink font-semibold">{meta.total}</span>
             </div>
           )}
         </div>
@@ -151,7 +151,7 @@ export default function ContactMessagesPage() {
               header: "Sender Details",
               render: (m) => (
                 <div className="py-1 space-y-1">
-                  <p className="text-base font-bold text-ink font-heading">{m.fullName || "Anonymous"}</p>
+                  <p className="text-base font-semibold text-ink font-heading">{m.fullName || "Anonymous"}</p>
                   <div className="flex flex-col gap-0.5 text-xs text-muted font-mono">
                     <span className="flex items-center gap-1.5 truncate">
                       <Mail size={12} className="text-muted/70 shrink-0" />
@@ -188,7 +188,7 @@ export default function ContactMessagesPage() {
                   <p className="text-sm text-ink/80 line-clamp-2 leading-relaxed group-hover:text-accent transition-colors">
                     {m.message}
                   </p>
-                  <span className="text-[11px] font-mono text-accent font-semibold opacity-0 group-hover:opacity-100 transition-opacity inline-block mt-0.5">
+                  <span className="text-xs font-mono text-accent font-semibold opacity-0 group-hover:opacity-100 transition-opacity inline-block mt-0.5">
                     Click to expand message →
                   </span>
                 </div>
@@ -270,7 +270,7 @@ export default function ContactMessagesPage() {
               <div className="flex items-center justify-between p-5 border-b border-line bg-panel/30">
                 <div className="flex items-center gap-2">
                   <MessageSquare size={18} className="text-accent" />
-                  <h3 className="font-heading font-bold text-lg text-ink">Inquiry Details</h3>
+                  <h3 className="font-heading font-semibold text-lg text-ink">Inquiry Details</h3>
                 </div>
                 <button
                   onClick={() => setSelectedMessage(null)}
@@ -284,11 +284,11 @@ export default function ContactMessagesPage() {
                 <div className="grid grid-cols-2 gap-4 text-xs font-mono p-4 rounded-xl bg-panel/50 border border-line">
                   <div>
                     <span className="text-muted block font-body">From</span>
-                    <span className="font-bold text-ink text-sm font-heading">{selectedMessage.fullName}</span>
+                    <span className="font-semibold text-ink text-sm font-heading">{selectedMessage.fullName}</span>
                   </div>
                   <div>
                     <span className="text-muted block font-body">Reason</span>
-                    <span className="font-bold text-ink text-sm">{selectedMessage.reason || "General"}</span>
+                    <span className="font-semibold text-ink text-sm">{selectedMessage.reason || "General"}</span>
                   </div>
                   <div>
                     <span className="text-muted block font-body">Email</span>
@@ -301,7 +301,7 @@ export default function ContactMessagesPage() {
                 </div>
 
                 <div>
-                  <h4 className="text-xs font-mono font-semibold uppercase tracking-wider text-muted mb-2">Message Body</h4>
+                  <h4 className="text-sm font-medium text-muted mb-2">Message Body</h4>
                   <div className="p-4 rounded-xl border border-line bg-white text-sm text-ink leading-relaxed whitespace-pre-wrap">
                     {selectedMessage.message}
                   </div>

@@ -25,13 +25,13 @@ const LIVE_REFRESH_MS = 15000;
 function Metric({ icon: Icon, label, value, sub, tone }) {
   return (
     <div className="bg-white rounded-2xl border border-line p-4">
-      <div className="flex items-center gap-2 text-xs font-semibold text-muted uppercase tracking-wider">
+      <div className="flex items-center gap-2 text-sm font-medium text-muted">
         <span className={`w-7 h-7 rounded-lg flex items-center justify-center ${tone}`}>
           <Icon size={15} />
         </span>
         {label}
       </div>
-      <p className="mt-2 text-2xl font-heading font-extrabold text-ink">{value ?? "—"}</p>
+      <p className="mt-2 text-2xl font-heading font-semibold text-ink">{value ?? "—"}</p>
       {sub && <p className="text-xs text-muted mt-0.5">{sub}</p>}
     </div>
   );
@@ -102,7 +102,7 @@ export default function PlatformUsagePage() {
     <div className="font-body text-ink max-w-6xl mx-auto space-y-6">
       <Seo title="App & Web Usage" description="Which customers use the app, the website, or both." />
       <PageHeader
-        title={<span className="font-heading text-2xl md:text-3xl font-extrabold tracking-tight text-ink">App &amp; Web Usage</span>}
+        title={<span>App &amp; Web Usage</span>}
         description="Which customers use the mobile app, the website, or both — and who has the app open right now."
       />
 
@@ -114,8 +114,8 @@ export default function PlatformUsagePage() {
               <span className="absolute inline-flex h-full w-full rounded-full bg-verify opacity-60 animate-ping" />
               <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-verify" />
             </span>
-            <h2 className="font-heading font-bold text-ink">Live on the app now</h2>
-            <span className="text-sm font-mono font-bold text-verify">{live?.count ?? "…"}</span>
+            <h2 className="font-heading font-semibold text-ink">Live on the app now</h2>
+            <span className="text-sm font-mono font-semibold text-verify">{live?.count ?? "…"}</span>
           </div>
           <span className="text-xs text-muted">Updates every 15 seconds</span>
         </div>
@@ -127,7 +127,7 @@ export default function PlatformUsagePage() {
                 to={`/users/${u.id}`}
                 className="inline-flex items-center gap-2 rounded-xl border border-line px-3 py-2 hover:border-accent/40 hover:bg-panel transition-all"
               >
-                <span className="w-7 h-7 rounded-full bg-verify/10 text-verify flex items-center justify-center text-xs font-bold">
+                <span className="w-7 h-7 rounded-full bg-verify/10 text-verify flex items-center justify-center text-xs font-semibold">
                   {initials(u.fullName || "U")}
                 </span>
                 <span className="text-sm">
@@ -153,7 +153,7 @@ export default function PlatformUsagePage() {
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div className="bg-white rounded-2xl border border-line p-4">
-          <p className="text-xs font-semibold text-muted uppercase tracking-wider flex items-center gap-1.5"><Smartphone size={13} /> Active on the app</p>
+          <p className="text-sm font-medium text-muted flex items-center gap-1.5"><Smartphone size={13} /> Active on the app</p>
           <div className="mt-2 flex gap-6 text-sm">
             <span><b className="text-lg text-ink">{s?.app_24h ?? "—"}</b> <span className="text-muted">24 h</span></span>
             <span><b className="text-lg text-ink">{s?.app_7d ?? "—"}</b> <span className="text-muted">7 days</span></span>
@@ -161,7 +161,7 @@ export default function PlatformUsagePage() {
           </div>
         </div>
         <div className="bg-white rounded-2xl border border-line p-4">
-          <p className="text-xs font-semibold text-muted uppercase tracking-wider flex items-center gap-1.5"><Globe size={13} /> Active on the website (signed in)</p>
+          <p className="text-sm font-medium text-muted flex items-center gap-1.5"><Globe size={13} /> Active on the website (signed in)</p>
           <div className="mt-2 flex gap-6 text-sm">
             <span><b className="text-lg text-ink">{s?.web_24h ?? "—"}</b> <span className="text-muted">24 h</span></span>
             <span><b className="text-lg text-ink">{s?.web_7d ?? "—"}</b> <span className="text-muted">7 days</span></span>
@@ -208,7 +208,7 @@ export default function PlatformUsagePage() {
               header: "Customer",
               render: (u) => (
                 <div className="py-1 min-w-0">
-                  <p className="text-sm font-bold text-ink truncate">{u.fullName}</p>
+                  <p className="text-sm font-semibold text-ink truncate">{u.fullName}</p>
                   <p className="text-xs text-muted truncate">{u.email}</p>
                 </div>
               ),

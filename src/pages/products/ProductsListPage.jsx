@@ -93,7 +93,7 @@ export default function ProductsListPage() {
         actions={
           <Link
             to="/products/new"
-            className="inline-flex items-center gap-2 px-4 py-2 text-xs font-bold text-white bg-[#F97316] hover:bg-[#EA6A0A] rounded-xl transition-all shadow-xs cursor-pointer"
+            className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-white bg-[#F97316] hover:bg-[#EA6A0A] rounded-xl transition-all shadow-xs cursor-pointer"
           >
             <Plus size={16} /> New Product
           </Link>
@@ -152,10 +152,10 @@ export default function ProductsListPage() {
                     </div>
                   )}
                   <div className="min-w-0">
-                    <p className="text-xs font-bold text-gray-900 line-clamp-1">
+                    <p className="text-xs font-semibold text-gray-900 line-clamp-1">
                       {p.name}
                     </p>
-                    <p className="text-[11px] font-semibold text-gray-400 flex items-center gap-1 mt-0.5">
+                    <p className="text-xs font-semibold text-gray-400 flex items-center gap-1 mt-0.5">
                       <Tag size={11} className="text-gray-300" />
                       {p.brand?.name || "Unbranded"}
                     </p>
@@ -183,11 +183,11 @@ export default function ProductsListPage() {
               header: "Pricing",
               render: (p) => (
                 <div>
-                  <p className="text-xs font-extrabold text-gray-900 font-heading">
+                  <p className="text-xs font-semibold text-gray-900 font-heading">
                     {formatCurrency(p.sellingPrice)}
                   </p>
                   {p.originalPrice && p.originalPrice > p.sellingPrice && (
-                    <p className="text-[11px] font-medium text-gray-400 line-through">
+                    <p className="text-xs font-medium text-gray-400 line-through">
                       {formatCurrency(p.originalPrice)}
                     </p>
                   )}

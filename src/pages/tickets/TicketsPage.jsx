@@ -123,7 +123,7 @@ function TicketDetail({ ticketId, onClose, onChanged }) {
                     }`}
                   >
                     <p className="whitespace-pre-wrap">{m.body}</p>
-                    <p className={`text-[11px] mt-1 ${mine ? "text-white/80" : "text-muted"}`}>
+                    <p className={`text-xs mt-1 ${mine ? "text-white/80" : "text-muted"}`}>
                       {mine ? m.adminName || "Admin" : ticket.user?.fullName} · {formatDateTime(m.createdAt)}
                     </p>
                   </div>

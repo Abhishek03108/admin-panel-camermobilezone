@@ -12,13 +12,13 @@ export default function DataTable({ columns, rows, isLoading, emptyTitle, emptyD
 
   return (
     <div className="overflow-x-auto -mx-px">
-      <table className="w-full text-sm">
+      <table className="w-full text-[15px]">
         <thead>
-          <tr className="border-b border-line">
+          <tr className="border-b border-line bg-panel/60">
             {columns.map((col) => (
               <th
                 key={col.key}
-                className={`text-left font-medium text-muted px-4 py-3 whitespace-nowrap ${col.headClassName || ""}`}
+                className={`text-left text-sm font-medium text-muted px-5 py-3.5 whitespace-nowrap ${col.headClassName || ""}`}
               >
                 {col.header}
               </th>
@@ -29,7 +29,7 @@ export default function DataTable({ columns, rows, isLoading, emptyTitle, emptyD
           {rows.map((row) => (
             <tr key={row[rowKey]} className="border-b border-line last:border-0 hover:bg-panel/60 transition-colors">
               {columns.map((col) => (
-                <td key={col.key} className={`px-4 py-3 align-middle ${col.className || ""}`}>
+                <td key={col.key} className={`px-5 py-4 align-middle text-ink ${col.className || ""}`}>
                   {col.render ? col.render(row) : row[col.key]}
                 </td>
               ))}

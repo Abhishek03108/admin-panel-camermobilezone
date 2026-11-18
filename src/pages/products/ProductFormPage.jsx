@@ -214,7 +214,7 @@ export default function ProductFormPage() {
         </Link>
         <PageHeader
           title={
-            <span className="font-heading text-2xl md:text-3xl font-extrabold tracking-tight text-ink">
+            <span>
               {isEdit ? form.name || "Edit Product" : "Create New Product"}
             </span>
           }
@@ -242,7 +242,7 @@ export default function ProductFormPage() {
                 isDisabled
                   ? "opacity-40 cursor-not-allowed text-muted"
                   : isActive
-                  ? "text-accentDark font-bold"
+                  ? "text-accentDark font-semibold"
                   : "text-muted hover:text-ink hover:bg-white/60"
               }`}
             >
@@ -290,7 +290,7 @@ export default function ProductFormPage() {
               <div className="w-8 h-8 rounded-lg bg-panel flex items-center justify-center border border-line text-ink">
                 <Package size={18} />
               </div>
-              <h3 className="font-heading font-extrabold text-lg text-ink">Basic Product Information</h3>
+              <h3 className="font-heading font-semibold text-lg text-ink">Basic Product Information</h3>
             </div>
 
             <Field label="Product Name" required>
@@ -442,7 +442,7 @@ export default function ProductFormPage() {
             {Number(form.originalPrice) > 0 && Number(form.sellingPrice) > 0 && (
               <div className="p-3.5 bg-panel border border-line rounded-xl flex items-center justify-between text-xs">
                 <span className="font-semibold text-muted">Discount Calculation</span>
-                <span className="font-bold text-ink">
+                <span className="font-semibold text-ink">
                   {formatDiscount(form.originalPrice, form.sellingPrice)}
                 </span>
               </div>
@@ -454,7 +454,7 @@ export default function ProductFormPage() {
             <div className="space-y-3">
               <div className="flex items-center gap-2">
                 <Tag size={15} className="text-muted" />
-                <span className="text-xs font-semibold text-muted uppercase tracking-wider">
+                <span className="text-sm font-medium text-muted">
                   Storefront Display Tags
                 </span>
               </div>
@@ -602,7 +602,7 @@ function ImagesTab({ productId, images, onChange }) {
     >
       <div className="flex items-center justify-between border-b border-line pb-4">
         <div>
-          <h3 className="font-heading font-extrabold text-lg text-ink">Product Gallery</h3>
+          <h3 className="font-heading font-semibold text-lg text-ink">Product Gallery</h3>
           <p className="text-xs font-semibold text-muted">Upload high-resolution media. The primary image is displayed first.</p>
         </div>
       </div>
@@ -697,7 +697,7 @@ function ImagesTab({ productId, images, onChange }) {
                   </div>
 
                   {idx === 0 && (
-                    <span className="absolute top-2 left-2 px-2.5 py-1 rounded-lg bg-accent text-white font-semibold text-[10px] tracking-wide shadow-2xs z-10">
+                    <span className="absolute top-2 left-2 px-2.5 py-1 rounded-lg bg-accent text-white font-semibold text-xs tracking-wide shadow-2xs z-10">
                       Primary
                     </span>
                   )}
@@ -754,7 +754,7 @@ function SpecsTab({ productId, specs, onChange }) {
       className="bg-white rounded-2xl border border-line p-6 md:p-8 space-y-6 shadow-xs max-w-3xl"
     >
       <div className="border-b border-line pb-4">
-        <h3 className="font-heading font-extrabold text-lg text-ink">Technical Specifications</h3>
+        <h3 className="font-heading font-semibold text-lg text-ink">Technical Specifications</h3>
         <p className="text-xs font-semibold text-muted mt-0.5">Define attribute key-value pairs (e.g., Memory, Processor, Storage).</p>
       </div>
 
@@ -866,7 +866,7 @@ function InspectionTab({ productId, points, onChange }) {
       className="bg-white rounded-2xl border border-line p-6 md:p-8 space-y-6 shadow-xs max-w-3xl"
     >
       <div className="border-b border-line pb-4">
-        <h3 className="font-heading font-extrabold text-lg text-ink">Inspection Checklist</h3>
+        <h3 className="font-heading font-semibold text-lg text-ink">Inspection Checklist</h3>
         <p className="text-xs font-semibold text-muted mt-0.5">
           Quality assurance checkpoints displayed on the customer-facing inspection report.
         </p>

@@ -29,7 +29,7 @@ export default function CuratedListsPage() {
       <Seo title="Curated Lists" description="Manage trending products, deals of the week, and recently added." />
 
       <PageHeader 
-        title={<span className="font-heading text-2xl md:text-3xl font-extrabold tracking-tight text-ink">Curated Lists</span>} 
+        title={<span>Curated Lists</span>} 
         description="Manually curated product collections featured across store sections and homepage showcases." 
       />
 
@@ -42,7 +42,7 @@ export default function CuratedListsPage() {
               key={t.key}
               onClick={() => setActiveTab(t.key)}
               className={`relative px-5 py-3.5 text-base font-semibold transition-colors whitespace-nowrap cursor-pointer select-none ${
-                isActive ? "text-accent font-bold" : "text-muted hover:text-ink"
+                isActive ? "text-accent font-semibold" : "text-muted hover:text-ink"
               }`}
             >
               {t.label}
@@ -154,7 +154,7 @@ function DealsSettingsCard() {
           <Clock size={20} />
         </div>
         <div>
-          <h3 className="text-base font-bold text-ink font-heading">Countdown Settings</h3>
+          <h3 className="text-base font-semibold text-ink font-heading">Countdown Settings</h3>
           <p className="text-sm text-muted">Configure banner headings and the exact expiration timer for storefront deals.</p>
         </div>
       </div>
@@ -162,7 +162,7 @@ function DealsSettingsCard() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         {/* Section Title Input */}
         <div className="space-y-1.5">
-          <label className="block text-xs font-bold tracking-wide uppercase text-muted">
+          <label className="block text-sm font-medium text-muted">
             Section Title
           </label>
           <div className="relative">
@@ -178,7 +178,7 @@ function DealsSettingsCard() {
         
         {/* Subtitle / Tagline Input */}
         <div className="space-y-1.5">
-          <label className="block text-xs font-bold tracking-wide uppercase text-muted">
+          <label className="block text-sm font-medium text-muted">
             Subtitle / Tagline
           </label>
           <div className="relative">
@@ -194,7 +194,7 @@ function DealsSettingsCard() {
         
         {/* Ends At (Date & Time) Native Selector Fix */}
         <div className="space-y-1.5">
-          <label className="block text-xs font-bold tracking-wide uppercase text-muted">
+          <label className="block text-sm font-medium text-muted">
             Ends At (Date & Time) <span className="text-accent">*</span>
           </label>
           <div className="relative flex items-center">
@@ -220,7 +220,7 @@ function DealsSettingsCard() {
 
       <div className="flex justify-end pt-2 border-t border-line/60">
         <button 
-          className="px-5 py-2.5 bg-accent text-white rounded-xl text-base font-bold hover:bg-accent-dark transition-all flex items-center gap-2 shadow-2xs disabled:opacity-50 cursor-pointer" 
+          className="px-5 py-2.5 bg-accent text-white rounded-xl text-base font-semibold hover:bg-accent-dark transition-all flex items-center gap-2 shadow-2xs disabled:opacity-50 cursor-pointer" 
           onClick={handleSave} 
           disabled={isSaving}
         >
@@ -302,11 +302,11 @@ function CuratedListManager({ api, label, showAddedDate = false }) {
       {/* Header Bar */}
       <div className="flex items-center justify-between p-5 border-b border-line bg-panel/30">
         <div>
-          <h2 className="text-base font-extrabold text-ink font-heading">{label}</h2>
+          <h2 className="text-base font-semibold text-ink font-heading">{label}</h2>
           <p className="text-sm text-muted mt-0.5">{sorted.length} product(s) currently active in this collection</p>
         </div>
         <button 
-          className="px-4 py-2.5 bg-accent text-white rounded-xl text-base font-bold hover:bg-accent-dark transition-all flex items-center gap-2 shadow-2xs cursor-pointer" 
+          className="px-4 py-2.5 bg-accent text-white rounded-xl text-base font-semibold hover:bg-accent-dark transition-all flex items-center gap-2 shadow-2xs cursor-pointer" 
           onClick={() => setPickerOpen(true)}
         >
           <Plus size={18} /> Add Product
@@ -337,7 +337,7 @@ function CuratedListManager({ api, label, showAddedDate = false }) {
                 className="flex items-center gap-4 px-5 py-3.5 hover:bg-panel/40 transition-colors group"
               >
                 {/* Index badge */}
-                <span className="w-6 text-center text-sm font-mono font-bold text-muted/60">
+                <span className="w-6 text-center text-sm font-mono font-semibold text-muted/60">
                   {idx + 1}
                 </span>
 
@@ -356,7 +356,7 @@ function CuratedListManager({ api, label, showAddedDate = false }) {
 
                 {/* Product Info */}
                 <div className="flex-1 min-w-0">
-                  <p className="text-base font-bold text-ink truncate font-heading">{entry.product?.name || "Unnamed Product"}</p>
+                  <p className="text-base font-semibold text-ink truncate font-heading">{entry.product?.name || "Unnamed Product"}</p>
                   <p className="text-sm font-mono font-semibold text-muted mt-0.5">{formatCurrency(entry.product?.sellingPrice || 0)}</p>
                 </div>
 
@@ -456,7 +456,7 @@ function ProductPickerModal({ onClose, onPick, existingIds }) {
   };
 
   return (
-    <Modal open onClose={onClose} title={<span className="text-lg font-bold font-heading">Add Product to List</span>} size="lg">
+    <Modal open onClose={onClose} title="Add Product to List" size="lg">
       <div className="space-y-4">
         {/* Search Input with styled panel background */}
         <div className="relative">
@@ -499,7 +499,7 @@ function ProductPickerModal({ onClose, onPick, existingIds }) {
                   )}
                   
                   <div className="flex-1 min-w-0">
-                    <p className="text-base font-bold text-ink truncate font-heading group-hover:text-accent transition-colors">{p.name}</p>
+                    <p className="text-base font-semibold text-ink truncate font-heading group-hover:text-accent transition-colors">{p.name}</p>
                     <p className="text-sm font-mono text-muted">{formatCurrency(p.sellingPrice)}</p>
                   </div>
 
@@ -510,7 +510,7 @@ function ProductPickerModal({ onClose, onPick, existingIds }) {
                       Already in List
                     </span>
                   ) : (
-                    <span className="text-xs font-bold text-accent opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
+                    <span className="text-xs font-semibold text-accent opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
                       <ListPlus size={14} /> Add Item
                     </span>
                   )}
